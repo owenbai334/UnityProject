@@ -1,6 +1,6 @@
-/Library
-/Log
-/Packages
-/ProjectSettings
-/UserSettings
-/.vscode
+Library/
+Log/
+Packages/
+ProjectSettings/
+UserSettings/
+.vscode/
