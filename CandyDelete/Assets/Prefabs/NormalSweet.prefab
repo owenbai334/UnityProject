@@ -9,6 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3694335323406744133}
+  - component: {fileID: 2628804120053819026}
+  - component: {fileID: -1830997248190902108}
+  - component: {fileID: 5904144034044886391}
   m_Layer: 0
   m_Name: NormalSweet
   m_TagString: Untagged
@@ -31,6 +34,56 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2628804120053819026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3694335323406744134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64952284a37e25046bcf05197804dd28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 0}
+--- !u!114 &-1830997248190902108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3694335323406744134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bd4929b5523cd94a99ce9a390ff8bd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5904144034044886391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3694335323406744134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32ad9812c48fb62458fc6bbc32891064, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorSprites:
+  - color: 0
+    sprite: {fileID: 21300000, guid: 7f49db1c61769af4585cbec33522b25a, type: 3}
+  - color: 1
+    sprite: {fileID: 21300000, guid: f4c29d5eee002f74b9991e7af7ef1411, type: 3}
+  - color: 2
+    sprite: {fileID: 21300000, guid: 48f65dad729e26549afddc878a1b7ecb, type: 3}
+  - color: 3
+    sprite: {fileID: 21300000, guid: 5fafbc00b52def64398949ad23c0a11a, type: 3}
+  - color: 4
+    sprite: {fileID: 21300000, guid: 2fff4a171ce6f0e45b8bc5146c11b4fb, type: 3}
+  - color: 5
+    sprite: {fileID: 21300000, guid: c1df118b524c60149b961730cd0a3595, type: 3}
 --- !u!1001 &9189761417443848924
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40,7 +93,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3528816164439188502, guid: d1aa85c9b03a2dd4894f175814051017, type: 3}
       propertyPath: m_Name
-      value: Square
+      value: Sweet
       objectReference: {fileID: 0}
     - target: {fileID: 5964726424079391487, guid: d1aa85c9b03a2dd4894f175814051017, type: 3}
       propertyPath: m_RootOrder
@@ -48,19 +101,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5964726424079391487, guid: d1aa85c9b03a2dd4894f175814051017, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.4
+      value: 0.65
       objectReference: {fileID: 0}
     - target: {fileID: 5964726424079391487, guid: d1aa85c9b03a2dd4894f175814051017, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.4
+      value: 0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 5964726424079391487, guid: d1aa85c9b03a2dd4894f175814051017, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5964726424079391487, guid: d1aa85c9b03a2dd4894f175814051017, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.31
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5964726424079391487, guid: d1aa85c9b03a2dd4894f175814051017, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.13
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5964726424079391487, guid: d1aa85c9b03a2dd4894f175814051017, type: 3}
       propertyPath: m_LocalPosition.z

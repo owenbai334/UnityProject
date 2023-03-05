@@ -19,30 +19,22 @@ public class GameManager : MonoBehaviour
     private Dictionary<SweetType,GameObject> SweetPrefabDictionary;
     
     [System.Serializable]
-    public struct SweetPreab
+    public struct SweetPrefab
     {
         public SweetType type;
         public GameObject prefab;
     }
-    public SweetPreab[] SweetPrefabs;
+    public SweetPrefab[] SweetPrefabs;
     private static GameManager _instance;
-    public static GameManager Instance
-    {
-        get
-        {
-            return _instance;
-        }
-        set
-        {
-            _instance = value;
-        }
-    }
+    public static GameManager Instance { get => _instance; set => _instance = value; }
     public int GridColume;
     public int GridRow;
     public GameObject GridPrefab;
+    //甜品陣列
+    GameSweet[,] sweets;
     void Awake() 
     {
-        _instance = this;
+        Instance = this;
     }
     // Start is called before the first frame update
     //0.65 0.49
@@ -64,12 +56,25 @@ public class GameManager : MonoBehaviour
                 Chocolate.transform.SetParent(transform);
             }
         }
+        sweets= new GameSweet[GridColume,GridRow];
+        for (int x = 0; x < GridColume; x++)
+        {
+            for (int y = 0; y < GridRow; y++)
+            {                                                                           
+                GameObject newSweet = Instantiate(SweetPrefabDictionary[SweetType.NORMAL],CorrectPositon(x,y),Quaternion.identity);
+                newSweet.transform.SetParent(transform);
+
+                sweets[x,y] = newSweet.GetComponent<GameSweet>();
+                sweets[x,y].Init(x,y,this,SweetType.NORMAL);
+
+            }
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-            
+
     }
 
     public Vector2 CorrectPositon(int x,int y)
