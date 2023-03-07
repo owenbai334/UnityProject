@@ -334,6 +334,9 @@ MonoBehaviour:
   SweetPrefabs:
   - type: 1
     prefab: {fileID: 3694335323406744134, guid: a1abf8601228b3840b49d7f66ec393cf, type: 3}
+  - type: 0
+    prefab: {fileID: 2426048601840755295, guid: e508468e63e051b468377e4ffc4da99c, type: 3}
   GridColume: 10
   GridRow: 10
   GridPrefab: {fileID: 3528816164439188502, guid: d1aa85c9b03a2dd4894f175814051017, type: 3}
+  fillTime: 0.1

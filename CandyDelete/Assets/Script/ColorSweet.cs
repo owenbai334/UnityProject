@@ -24,11 +24,12 @@ public class ColorSweet : MonoBehaviour
     public ColorSprite[] colorSprites;
     Dictionary<ColorType,Sprite> colorSpriteDictionary;
     SpriteRenderer sprite;
+    //顏色數量
     public int NumColors
     {
         get => colorSprites.Length;
     }
-    public ColorType Color { get => color; set => color = value; }
+    public ColorType Color { get => color; set => SetColor(color); }
     ColorType color;
     void Awake()
     {
@@ -44,12 +45,12 @@ public class ColorSweet : MonoBehaviour
             }
         }
     }
-    public void SetColor(ColorType newColor)
+    public void SetColor(ColorType color)
     {
-        color = newColor;
-        if(colorSpriteDictionary.ContainsKey(newColor))
+        this.color = color;
+        if(colorSpriteDictionary.ContainsKey(color))
         {
-            sprite.sprite = colorSpriteDictionary[newColor];
+            sprite.sprite = colorSpriteDictionary[color];
         }
     }
 }

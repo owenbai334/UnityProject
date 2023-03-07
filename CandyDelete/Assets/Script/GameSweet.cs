@@ -38,16 +38,23 @@ public class GameSweet : MonoBehaviour
     public GameManager.SweetType Type { get => type;}
     CandyMove movedComponent;
     public CandyMove MovedComponent { get => movedComponent;}
+    ColorSweet coloredComponent;
+    public ColorSweet ColoredComponent { get => coloredComponent;}
 
     [HideInInspector]
     public GameManager gameManager;
     void Awake()
     {
         movedComponent = GetComponent<CandyMove>();
+        coloredComponent = GetComponent<ColorSweet>();
     }
     public bool CanMove()
     {
         return movedComponent!=null;
+    } 
+    public bool CanColor()
+    {
+        return coloredComponent!=null;
     } 
     public void Init(int x,int y,GameManager gameManager,GameManager.SweetType type)
     {

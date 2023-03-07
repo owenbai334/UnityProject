@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3694335323406744133}
   - component: {fileID: 2628804120053819026}
-  - component: {fileID: -1830997248190902108}
-  - component: {fileID: 5904144034044886391}
+  - component: {fileID: -7456428723433824539}
+  - component: {fileID: -2660363467244603116}
   m_Layer: 0
   m_Name: NormalSweet
   m_TagString: Untagged
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
---- !u!114 &-1830997248190902108
+--- !u!114 &-7456428723433824539
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bd4929b5523cd94a99ce9a390ff8bd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5904144034044886391
+--- !u!114 &-2660363467244603116
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
     public int GridColume;
     public int GridRow;
     public GameObject GridPrefab;
+    //填充時間
+    public float fillTime;
     //甜品陣列
     GameSweet[,] sweets;
     void Awake() 
@@ -60,15 +62,12 @@ public class GameManager : MonoBehaviour
         for (int x = 0; x < GridColume; x++)
         {
             for (int y = 0; y < GridRow; y++)
-            {                                                                           
-                GameObject newSweet = Instantiate(SweetPrefabDictionary[SweetType.NORMAL],CorrectPositon(x,y),Quaternion.identity);
-                newSweet.transform.SetParent(transform);
-
-                sweets[x,y] = newSweet.GetComponent<GameSweet>();
-                sweets[x,y].Init(x,y,this,SweetType.NORMAL);
-
+            {      
+                CreateCandy(x,y,SweetType.EMPTY);
             }
         }
+
+        StartCoroutine(AllFill());
     }
 
     // Update is called once per frame
@@ -82,4 +81,66 @@ public class GameManager : MonoBehaviour
         return new Vector2(transform.position.x-GridColume/2f+x,transform.position.y+GridRow/2f-y);
     }
     
+    //產生甜品的方法
+    public GameSweet CreateCandy(int x,int y,SweetType type)
+    {
+        GameObject newSweet =  Instantiate(SweetPrefabDictionary[type],CorrectPositon(x,y),Quaternion.identity);
+        newSweet.transform.parent= transform;
+
+        sweets[x,y]=newSweet.GetComponent<GameSweet>();
+        sweets[x,y].Init(x,y,this,type);
+
+        return sweets[x,y];
+    }
+    //全部填充的方法
+    public IEnumerator AllFill()
+    {
+        while(Fill()) 
+        {
+            yield return new WaitForSeconds(fillTime);
+        }
+    }
+    //部分填充
+    public bool Fill()
+    {
+        bool FilledNotFinished = false;
+        
+        for (int y = GridRow-2; y >= 0; y--)        
+        {
+          for (int x = 0; x < GridColume; x++)
+          {
+            GameSweet sweet = sweets[x,y];//得到當前元素位置的糖果對象
+            if(sweets[x,y].CanMove())//如果無法移動，則無法往下填充
+            {
+                GameSweet sweetBelow = sweets[x,y+1];
+                if(sweetBelow.Type == SweetType.EMPTY)
+                {
+                    sweet.MovedComponent.Move(x,y+1,fillTime);
+                    sweets[x,y+1] = sweet;
+                    CreateCandy(x,y,SweetType.EMPTY);
+                    FilledNotFinished = true;
+                }
+            }
+          }
+        }
+
+        //最上排的特殊情況
+        for (int x = 0; x < GridColume; x++)
+        {
+            GameSweet sweet = sweets[x,0];
+            if(sweet.Type==SweetType.EMPTY) 
+            {
+                GameObject newSweet =  Instantiate(SweetPrefabDictionary[SweetType.NORMAL],CorrectPositon(x,-1),Quaternion.identity);
+                newSweet.transform.parent = transform;
+
+                sweets[x,0] = newSweet.GetComponent<GameSweet>();
+                sweets[x,0].Init(x,-1,this,SweetType.NORMAL);
+                sweets[x,0].MovedComponent.Move(x,0,fillTime);
+                sweets[x,0].ColoredComponent.SetColor((ColorSweet.ColorType)Random.Range(0,sweets[x,0].ColoredComponent.NumColors));
+                FilledNotFinished = true;
+            }
+        }
+
+        return FilledNotFinished;
+    }
 }
