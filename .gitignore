@@ -1,6 +1,14 @@
+#CandyDelete
 CandyDelete/Library/
 CandyDelete/Log/
 CandyDelete/Packages/
 CandyDelete/ProjectSettings/
 CandyDelete/UserSettings/
 CandyDelete/.vscode/
+#MonsterSisiter
+MonsterSisiter/Library/
+MonsterSisiter/Log/
+MonsterSisiter/Packages/
+MonsterSisiter/ProjectSettings/
+MonsterSisiter/UserSettings/
+MonsterSisiter/.vscode/
