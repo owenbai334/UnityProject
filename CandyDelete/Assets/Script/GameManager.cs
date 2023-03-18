@@ -204,12 +204,19 @@ public class GameManager : MonoBehaviour
             sweets[sweetMe.X, sweetMe.Y] = sweetNeighbor;
             sweets[sweetNeighbor.X, sweetNeighbor.Y] = sweetMe;
 
-            int tempX = sweetMe.X;
-            int tempY = sweetMe.Y;
+            if (MatchSweets(sweetMe, sweetNeighbor.X, sweetNeighbor.Y) != null || MatchSweets(sweetNeighbor, sweetMe.X, sweetMe.Y) != null)
+            {
+                int tempX = sweetMe.X;
+                int tempY = sweetMe.Y;
 
-            sweetMe.MovedComponent.Move(sweetNeighbor.X, sweetNeighbor.Y, fillTime);
-            sweetNeighbor.MovedComponent.Move(tempX, tempY, fillTime);
-
+                sweetMe.MovedComponent.Move(sweetNeighbor.X, sweetNeighbor.Y, fillTime);
+                sweetNeighbor.MovedComponent.Move(tempX, tempY, fillTime);
+            }
+            else
+            {
+                sweets[sweetMe.X, sweetMe.Y] = sweetMe;
+                sweets[sweetNeighbor.X, sweetNeighbor.Y] = sweetNeighbor;
+            }
         }
     }
     public void PressSweet(GameSweet sweet)
@@ -226,5 +233,196 @@ public class GameManager : MonoBehaviour
         {
             ExchangeSweets(pressedSweet, enterSweet);
         }
+    }
+    //匹配方法
+    public List<GameSweet> MatchSweets(GameSweet sweet, int newX, int newY)
+    {
+        if (sweet.CanColor())
+        {
+            ColorSweet.ColorType color = sweet.ColoredComponent.Color;
+            List<GameSweet> MatchRowSweets = new List<GameSweet>();
+            List<GameSweet> MatchColumeSweets = new List<GameSweet>();
+            List<GameSweet> FinishedMatchingSweets = new List<GameSweet>();
+
+            //行匹配
+            MatchRowSweets.Add(sweet);
+
+            //i=0 左 ,i=1右
+            for (int i = 0; i <= 1; i++)
+            {
+                for (int xDistance = 1; xDistance < GridColume; xDistance++)
+                {
+                    int x;
+                    if (i == 0)
+                    {
+                        x = newX - xDistance;
+                    }
+                    else
+                    {
+                        x = newX + xDistance;
+                    }
+
+                    if (x < 0 || x >= GridColume)
+                    {
+                        break;
+                    }
+
+                    if (sweets[x, newY].CanColor() && sweets[x, newY].ColoredComponent.Color == color)
+                    {
+                        MatchRowSweets.Add(sweets[x, newY]);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            //LT型匹配
+            //檢查行遍例列表數量是否大於三
+            if (MatchRowSweets.Count >= 3)
+            {
+                for (int i = 0; i < MatchRowSweets.Count; i++)
+                {
+                    //滿足行匹配後進行列遍例
+                    //i=0 上 ,i=1下
+                    for (int j = 0; j <= 1; j++)
+                    {
+                        for (int yDistance = 0; yDistance < GridRow; yDistance++)
+                        {
+                            int y;
+                            if (j == 0)
+                            {
+                                y = newY - yDistance;
+                            }
+                            else
+                            {
+                                y = newY + yDistance;
+                            }
+
+                            if (y < 0 || y >= GridRow)
+                            {
+                                break;
+                            }
+
+                            if (sweets[MatchRowSweets[i].X, y].CanColor() && sweets[MatchRowSweets[i].X, y].ColoredComponent.Color == color)
+                            {
+                                MatchColumeSweets.Add(sweets[MatchRowSweets[i].X, y]);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    if (MatchColumeSweets.Count < 2)
+                    {
+                        MatchColumeSweets.Clear();
+                    }
+                    else
+                    {
+                        for (int j = 0; j < MatchColumeSweets.Count; j++)
+                        {
+                            FinishedMatchingSweets.Add(MatchColumeSweets[j]);
+                        }
+                        break;
+                    }
+                }
+            }
+            if (FinishedMatchingSweets.Count >= 3)
+            {
+                return FinishedMatchingSweets;
+            }
+
+            //列匹配
+            MatchColumeSweets.Add(sweet);
+
+            //i=0 上 ,i=1下
+            for (int i = 0; i <= 1; i++)
+            {
+                for (int yDistance = 1; yDistance < GridRow; yDistance++)
+                {
+                    int y;
+                    if (i == 0)
+                    {
+                        y = newY - yDistance;
+                    }
+                    else
+                    {
+                        y = newY + yDistance;
+                    }
+
+                    if (y < 0 || y >= GridRow)
+                    {
+                        break;
+                    }
+
+                    if (sweets[newX, y].CanColor() && sweets[newX, y].ColoredComponent.Color == color)
+                    {
+                        MatchColumeSweets.Add(sweets[newX, y]);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            //檢查列遍例列表數量是否大於三
+            if (MatchColumeSweets.Count >= 3)
+            {
+                for (int i = 0; i < MatchColumeSweets.Count; i++)
+                {
+                    //滿足行匹配後進行列遍例
+                    //i=0 上 ,i=1下
+                    for (int j = 0; j <= 1; j++)
+                    {
+                        for (int xDistance = 0; xDistance < GridColume; xDistance++)
+                        {
+                            int x;
+                            if (j == 0)
+                            {
+                                x = newX - xDistance;
+                            }
+                            else
+                            {
+                                x = newX + xDistance;
+                            }
+
+                            if (x < 0 || x >= GridColume)
+                            {
+                                break;
+                            }
+
+                            if (sweets[x,MatchColumeSweets[i].Y].CanColor() && sweets[x,MatchColumeSweets[i].Y].ColoredComponent.Color == color)
+                            {
+                                MatchRowSweets.Add(sweets[x,MatchColumeSweets[i].Y]);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    if (MatchRowSweets.Count < 2)
+                    {
+                        MatchRowSweets.Clear();
+                    }
+                    else
+                    {
+                        for (int j = 0; j < MatchRowSweets.Count; j++)
+                        {
+                            FinishedMatchingSweets.Add(MatchRowSweets[j]);
+                        }
+                        break;
+                    }
+                }
+            }
+            if (FinishedMatchingSweets.Count >= 3)
+            {
+                return FinishedMatchingSweets;
+            }
+        }
+        return null;
     }
 }
