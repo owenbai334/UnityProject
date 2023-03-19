@@ -41,7 +41,6 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
     }
-    // Start is called before the first frame update
     //0.65 0.49
     void Start()
     {
@@ -76,18 +75,11 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(AllFill());
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    #region "填充糖果"
     public Vector2 CorrectPositon(int x, int y)
     {
         return new Vector2(transform.position.x - GridColume / 2f + x, transform.position.y + GridRow / 2f - y);
-    }
-
+    }  
     //產生甜品的方法
     public GameSweet CreateCandy(int x, int y, SweetType type)
     {
@@ -102,9 +94,17 @@ public class GameManager : MonoBehaviour
     //全部填充的方法
     public IEnumerator AllFill()
     {
-        while (Fill())
+        bool needRefill = true;
+
+        while (needRefill)
         {
             yield return new WaitForSeconds(fillTime);
+            while (Fill())
+            {
+                yield return new WaitForSeconds(fillTime);
+            }         
+            //填充後再清除
+            needRefill = ClearAllMatchedSweets();
         }
     }
     //部分填充
@@ -189,13 +189,13 @@ public class GameManager : MonoBehaviour
 
         return FilledNotFinished;
     }
-
+    #endregion
+    #region "交換糖果"
     //判斷甜品是否相鄰
     bool Adjacent(GameSweet sweetMe, GameSweet sweetNeighbor)
     {
         return (sweetMe.X == sweetNeighbor.X && Mathf.Abs(sweetMe.Y - sweetNeighbor.Y) == 1) || (sweetMe.Y == sweetNeighbor.Y && Mathf.Abs(sweetMe.X - sweetNeighbor.X) == 1);
     }
-
     //交換兩個甜品
     void ExchangeSweets(GameSweet sweetMe, GameSweet sweetNeighbor)
     {
@@ -211,6 +211,8 @@ public class GameManager : MonoBehaviour
 
                 sweetMe.MovedComponent.Move(sweetNeighbor.X, sweetNeighbor.Y, fillTime);
                 sweetNeighbor.MovedComponent.Move(tempX, tempY, fillTime);
+                ClearAllMatchedSweets();
+                StartCoroutine(AllFill());
             }
             else
             {
@@ -219,6 +221,8 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    #endregion
+    #region "滑鼠點擊" 
     public void PressSweet(GameSweet sweet)
     {
         pressedSweet = sweet;
@@ -234,6 +238,8 @@ public class GameManager : MonoBehaviour
             ExchangeSweets(pressedSweet, enterSweet);
         }
     }
+    #endregion
+    #region "清除糖果"
     //匹配方法
     public List<GameSweet> MatchSweets(GameSweet sweet, int newX, int newY)
     {
@@ -278,6 +284,15 @@ public class GameManager : MonoBehaviour
                 }
             }
 
+            //行匹配加入
+            if (MatchRowSweets.Count >= 3)
+            {
+                for (int i = 0; i < MatchRowSweets.Count; i++)
+                {
+                    FinishedMatchingSweets.Add(MatchRowSweets[i]);
+                }
+            }
+
             //LT型匹配
             //檢查行遍例列表數量是否大於三
             if (MatchRowSweets.Count >= 3)
@@ -288,7 +303,7 @@ public class GameManager : MonoBehaviour
                     //i=0 上 ,i=1下
                     for (int j = 0; j <= 1; j++)
                     {
-                        for (int yDistance = 0; yDistance < GridRow; yDistance++)
+                        for (int yDistance = 1; yDistance < GridRow; yDistance++)
                         {
                             int y;
                             if (j == 0)
@@ -329,6 +344,10 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
+
+            MatchRowSweets.Clear();
+            MatchColumeSweets.Clear();
+
             if (FinishedMatchingSweets.Count >= 3)
             {
                 return FinishedMatchingSweets;
@@ -368,16 +387,26 @@ public class GameManager : MonoBehaviour
                 }
             }
 
+            //列匹配加入
+            if (MatchColumeSweets.Count >= 3)
+            {
+                for (int i = 0; i < MatchColumeSweets.Count; i++)
+                {
+                    FinishedMatchingSweets.Add(MatchColumeSweets[i]);
+                }
+            }
+
+            //LT型匹配
             //檢查列遍例列表數量是否大於三
             if (MatchColumeSweets.Count >= 3)
             {
                 for (int i = 0; i < MatchColumeSweets.Count; i++)
                 {
-                    //滿足行匹配後進行列遍例
+                    //滿足列匹配後進行行遍例
                     //i=0 上 ,i=1下
                     for (int j = 0; j <= 1; j++)
                     {
-                        for (int xDistance = 0; xDistance < GridColume; xDistance++)
+                        for (int xDistance = 1; xDistance < GridColume; xDistance++)
                         {
                             int x;
                             if (j == 0)
@@ -394,9 +423,9 @@ public class GameManager : MonoBehaviour
                                 break;
                             }
 
-                            if (sweets[x,MatchColumeSweets[i].Y].CanColor() && sweets[x,MatchColumeSweets[i].Y].ColoredComponent.Color == color)
+                            if (sweets[x, MatchColumeSweets[i].Y].CanColor() && sweets[x, MatchColumeSweets[i].Y].ColoredComponent.Color == color)
                             {
-                                MatchRowSweets.Add(sweets[x,MatchColumeSweets[i].Y]);
+                                MatchRowSweets.Add(sweets[x, MatchColumeSweets[i].Y]);
                             }
                             else
                             {
@@ -418,6 +447,10 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
+
+            MatchRowSweets.Clear();
+            MatchColumeSweets.Clear();
+
             if (FinishedMatchingSweets.Count >= 3)
             {
                 return FinishedMatchingSweets;
@@ -425,4 +458,44 @@ public class GameManager : MonoBehaviour
         }
         return null;
     }
+    //清除方法
+    public bool ClearCandy(int x, int y)
+    {
+        if (sweets[x, y].CanClear() && !sweets[x, y].ClearComponent.IsClear)
+        {
+            sweets[x, y].ClearComponent.Clear();
+            CreateCandy(x, y, SweetType.EMPTY);
+
+            return true;
+        }
+        return false;
+    }
+    //清除所有完成匹配的糖果
+    bool ClearAllMatchedSweets()
+    {
+        bool needRefill = false;
+        for (int y = 0; y < GridRow; y++)
+        {
+            for (int x = 0; x < GridColume; x++)
+            {
+                if (sweets[x, y].CanClear())
+                {
+                    List<GameSweet> matchList = MatchSweets(sweets[x, y], x, y);
+                    if (matchList != null)
+                    {
+                        for (int i = 0; i < matchList.Count; i++)
+                        {
+                            if (ClearCandy(matchList[i].X, matchList[i].Y))
+                            {
+                                needRefill = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return needRefill;
+    }
+    #endregion
 }

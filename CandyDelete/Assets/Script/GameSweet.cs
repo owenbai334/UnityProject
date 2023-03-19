@@ -40,6 +40,8 @@ public class GameSweet : MonoBehaviour
     public CandyMove MovedComponent { get => movedComponent;}
     ColorSweet coloredComponent;
     public ColorSweet ColoredComponent { get => coloredComponent;}
+    ClearSweet clearComponent;
+    public ClearSweet ClearComponent { get => clearComponent;}
 
     [HideInInspector]
     public GameManager gameManager;
@@ -47,6 +49,7 @@ public class GameSweet : MonoBehaviour
     {
         movedComponent = GetComponent<CandyMove>();
         coloredComponent = GetComponent<ColorSweet>();
+        clearComponent = GetComponent<ClearSweet>();
     }
     public bool CanMove()
     {
@@ -56,6 +59,10 @@ public class GameSweet : MonoBehaviour
     {
         return coloredComponent!=null;
     } 
+    public bool CanClear()
+    {
+        return clearComponent!=null;
+    }
     public void Init(int x,int y,GameManager gameManager,GameManager.SweetType type)
     {
         this.x = x;

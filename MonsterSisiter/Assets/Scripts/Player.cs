@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
     public float speed;
     public GameObject Bullet;
     public GameObject Knife;
-    Vector3 KnifeQuatanion;
     public Transform KnifePosition;
     // Start is called before the first frame update
     void Start()
@@ -25,8 +24,8 @@ public class Player : MonoBehaviour
 
     void Move()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        float horizontal = 0;
+        float vertical = 0;
 
         if(Input.GetKey(KeyCode.W))
         {
@@ -49,7 +48,7 @@ public class Player : MonoBehaviour
             vertical = 0;
         }
 
-        transform.Translate(horizontal*speed*Time.deltaTime,vertical*speed*Time.deltaTime,0);
+        transform.Translate(new Vector2(horizontal*speed*Time.deltaTime,vertical*speed*Time.deltaTime),Space.World);
     }
     void Shoot()
     {
