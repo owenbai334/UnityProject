@@ -55,7 +55,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3528816164439188502, guid: d1aa85c9b03a2dd4894f175814051017, type: 3}
       propertyPath: m_Name
-      value: Sweet (1)
+      value: Butter
       objectReference: {fileID: 0}
     - target: {fileID: 5964726424079391487, guid: d1aa85c9b03a2dd4894f175814051017, type: 3}
       propertyPath: m_RootOrder
@@ -119,7 +119,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 2574b8bf8cb6b4044898a2c695b73dcb, type: 3}
     - target: {fileID: 7062862161886026823, guid: d1aa85c9b03a2dd4894f175814051017, type: 3}
       propertyPath: m_SortingOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1aa85c9b03a2dd4894f175814051017, type: 3}

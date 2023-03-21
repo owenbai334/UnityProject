@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -37,6 +39,17 @@ public class GameManager : MonoBehaviour
     //要交換的倆甜品
     GameSweet pressedSweet;
     GameSweet enterSweet;
+    public Text TimeText;
+    float gameTime = 60;
+    bool GameOver;
+    public Text ScoreText;
+    public int playerScore;
+    float addScoreTime = 0;
+    float currentScore;
+    public GameObject gameOverPanel;
+    public Text GameMessager;
+    bool IsPause = true;
+    public Text LastGameScore;
     void Awake()
     {
         Instance = this;
@@ -75,11 +88,43 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(AllFill());
     }
+    void Update()
+    {
+        gameTime -= Time.deltaTime;
+        if (gameTime <= 0)
+        {
+            gameTime = 0;
+            //顯示失敗面板
+            GameMessager.text = "遊戲結束";
+            Time.timeScale = 0;
+            LastGameScore.text = "分數:"+playerScore.ToString();
+            ScoreText.text = playerScore.ToString();
+            IsPause = false;
+            gameOverPanel.SetActive(true);           
+            GameOver = true;
+            return;
+        }
+        TimeText.text = ((int)gameTime).ToString();
+        if (addScoreTime <= 0.05f)
+        {
+            addScoreTime += Time.deltaTime;
+        }
+        else
+        {
+            if (currentScore < playerScore)
+            {
+                currentScore++;
+                ScoreText.text = currentScore.ToString();
+                addScoreTime = 0;
+            }
+        }
+        PauseGame();
+    }
     #region "填充糖果"
     public Vector2 CorrectPositon(int x, int y)
     {
         return new Vector2(transform.position.x - GridColume / 2f + x, transform.position.y + GridRow / 2f - y);
-    }  
+    }
     //產生甜品的方法
     public GameSweet CreateCandy(int x, int y, SweetType type)
     {
@@ -102,7 +147,7 @@ public class GameManager : MonoBehaviour
             while (Fill())
             {
                 yield return new WaitForSeconds(fillTime);
-            }         
+            }
             //填充後再清除
             needRefill = ClearAllMatchedSweets();
         }
@@ -225,14 +270,26 @@ public class GameManager : MonoBehaviour
     #region "滑鼠點擊" 
     public void PressSweet(GameSweet sweet)
     {
+        if (GameOver)
+        {
+            return;
+        }
         pressedSweet = sweet;
     }
     public void EnterSweet(GameSweet sweet)
     {
+        if (GameOver)
+        {
+            return;
+        }
         enterSweet = sweet;
     }
     public void ReleaseSweet()
     {
+        if (GameOver)
+        {
+            return;
+        }
         if (Adjacent(pressedSweet, enterSweet))
         {
             ExchangeSweets(pressedSweet, enterSweet);
@@ -498,4 +555,31 @@ public class GameManager : MonoBehaviour
         return needRefill;
     }
     #endregion
+    public void PauseGame()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            gameOverPanel.SetActive(IsPause);
+            LastGameScore.text = "分數:"+playerScore.ToString();
+            IsPause = !IsPause;
+            if (!IsPause)
+            {
+                GameMessager.text = "遊戲暫停";
+                Time.timeScale = 0;
+            }
+            else
+            {
+                Time.timeScale = 1;
+            }
+        }
+    }
+    public void ReturnGame()
+    {
+        Time.timeScale=1;
+        SceneManager.LoadScene("Game");
+    }
+    public void QuitMain()
+    {
+        SceneManager.LoadScene("Title");
+    }
 }
