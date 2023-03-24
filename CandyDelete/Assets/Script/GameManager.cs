@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get => _instance; set => _instance = value; }
     public int GridColume;
     public int GridRow;
+    [HideInInspector]
     public GameObject GridPrefab;
     //填充時間
     public float fillTime;
@@ -39,16 +40,23 @@ public class GameManager : MonoBehaviour
     //要交換的倆甜品
     GameSweet pressedSweet;
     GameSweet enterSweet;
+    [HideInInspector]
     public Text TimeText;
     float gameTime = 60;
     bool GameOver;
+    [HideInInspector]
     public Text ScoreText;
+    [HideInInspector]
     public int playerScore;
     float addScoreTime = 0;
     float currentScore;
+    [HideInInspector]
     public GameObject gameOverPanel;
+    float AnimeTime;
+    bool isEsc = false;
     public Text GameMessager;
     bool IsPause = true;
+    [HideInInspector]
     public Text LastGameScore;
     void Awake()
     {
@@ -90,17 +98,27 @@ public class GameManager : MonoBehaviour
     }
     void Update()
     {
+        if (isEsc)
+        {
+            AnimeTime += Time.deltaTime;
+            if (AnimeTime >= 0.40f)
+            {
+                isEsc = false;
+                AnimeTime = 0;
+                Time.timeScale = 0;
+            }
+        }
         gameTime -= Time.deltaTime;
         if (gameTime <= 0)
         {
             gameTime = 0;
+            isEsc = true;
             //顯示失敗面板
             GameMessager.text = "遊戲結束";
-            Time.timeScale = 0;
-            LastGameScore.text = "分數:"+playerScore.ToString();
+            LastGameScore.text = "分數:" + playerScore.ToString();
             ScoreText.text = playerScore.ToString();
             IsPause = false;
-            gameOverPanel.SetActive(true);           
+            gameOverPanel.SetActive(true);
             GameOver = true;
             return;
         }
@@ -521,8 +539,8 @@ public class GameManager : MonoBehaviour
         if (sweets[x, y].CanClear() && !sweets[x, y].ClearComponent.IsClear)
         {
             sweets[x, y].ClearComponent.Clear();
+            ClearBarrier(x, y);
             CreateCandy(x, y, SweetType.EMPTY);
-
             return true;
         }
         return false;
@@ -540,11 +558,33 @@ public class GameManager : MonoBehaviour
                     List<GameSweet> matchList = MatchSweets(sweets[x, y], x, y);
                     if (matchList != null)
                     {
+                        //決定是否產生特殊糖果
+                        SweetType SpecialSweetType = SweetType.COUNT;
+
+                        GameSweet RandomSweet = matchList[Random.Range(0, matchList.Count)];
+                        int SpecialSweetX = RandomSweet.X;
+                        int SpecialSweetY = RandomSweet.Y;
+
+                        if (matchList.Count == 4)
+                        {
+                            SpecialSweetType = (SweetType)Random.Range((int)SweetType.ROW_CLEAR, (int)(SweetType.COLUME_CLEAR));
+                        }
+
                         for (int i = 0; i < matchList.Count; i++)
                         {
                             if (ClearCandy(matchList[i].X, matchList[i].Y))
                             {
                                 needRefill = true;
+                            }
+                        }
+
+                        if (SpecialSweetType != SweetType.COUNT)
+                        {
+                            Destroy(sweets[SpecialSweetX, SpecialSweetY]);
+                            GameSweet newSweet = CreateCandy(SpecialSweetX, SpecialSweetY, SpecialSweetType);
+                            if ((SpecialSweetType == SweetType.ROW_CLEAR || SpecialSweetType == SweetType.COLUME_CLEAR) && newSweet.CanColor() && matchList[0].CanColor())
+                            {
+                                newSweet.ColoredComponent.SetColor(matchList[0].ColoredComponent.Color);
                             }
                         }
                     }
@@ -554,18 +594,59 @@ public class GameManager : MonoBehaviour
 
         return needRefill;
     }
+    //清除餅乾
+    void ClearBarrier(int x, int y)
+    {
+        for (int friendX = x - 1; friendX <= x + 1; friendX++)
+        {
+            if (friendX != x && friendX > 0 && friendX < GridColume)
+            {
+                if (sweets[friendX, y].Type == SweetType.BARRIER && sweets[friendX, y].CanClear())
+                {
+                    sweets[friendX, y].ClearComponent.Clear();
+                    CreateCandy(friendX, y, SweetType.EMPTY);
+                }
+            }
+        }
+        for (int friendY = y - 1; friendY <= y + 1; friendY++)
+        {
+            if (friendY != x && friendY > 0 && friendY < GridRow)
+            {
+                if (sweets[x, friendY].Type == SweetType.BARRIER && sweets[x, friendY].CanClear())
+                {
+                    sweets[x, friendY].ClearComponent.Clear();
+                    CreateCandy(x, friendY, SweetType.EMPTY);
+                }
+            }
+        }
+    }
+    public void ClearRow(int row)
+    {
+        for (int x = 0; x < GridColume; x++)
+        {
+            ClearCandy(x, row);
+        }
+    }
+    public void ClearColumn(int column)
+    {
+        for (int y = 0; y < GridRow; y++)
+        {
+            ClearCandy(column, y);
+        }
+    }
     #endregion
+    #region "遊戲選單"
     public void PauseGame()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             gameOverPanel.SetActive(IsPause);
-            LastGameScore.text = "分數:"+playerScore.ToString();
+            LastGameScore.text = "分數:" + playerScore.ToString();
             IsPause = !IsPause;
             if (!IsPause)
             {
+                isEsc = true;
                 GameMessager.text = "遊戲暫停";
-                Time.timeScale = 0;
             }
             else
             {
@@ -575,11 +656,13 @@ public class GameManager : MonoBehaviour
     }
     public void ReturnGame()
     {
-        Time.timeScale=1;
+        Time.timeScale = 1;
         SceneManager.LoadScene("Game");
     }
     public void QuitMain()
     {
         SceneManager.LoadScene("Title");
     }
+    #endregion
+
 }
