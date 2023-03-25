@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3694335323406744133}
   - component: {fileID: 2628804120053819026}
-  - component: {fileID: 1384863006}
   - component: {fileID: 6298340504094511290}
+  - component: {fileID: 1384863006}
   m_Layer: 0
   m_Name: BarrierSweet
   m_TagString: Untagged
@@ -48,6 +48,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
+--- !u!114 &6298340504094511290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3694335323406744134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ec5d4a0abf886e4488171da7f3a4978, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationClear: {fileID: 7400000, guid: 4876b2dcde9338d49930c888af3182c6, type: 2}
+  DestroyAudio: {fileID: 8300000, guid: 68d6cfdc76edd9e4d9469cdcab523b41, type: 3}
 --- !u!95 &1384863006
 Animator:
   serializedVersion: 3
@@ -67,20 +81,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &6298340504094511290
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3694335323406744134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ec5d4a0abf886e4488171da7f3a4978, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animationClear: {fileID: 7400000, guid: 4876b2dcde9338d49930c888af3182c6, type: 2}
-  DestroyAudio: {fileID: 8300000, guid: 68d6cfdc76edd9e4d9469cdcab523b41, type: 3}
 --- !u!1001 &4258721101777130267
 PrefabInstance:
   m_ObjectHideFlags: 0

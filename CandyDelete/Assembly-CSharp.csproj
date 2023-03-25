@@ -41,7 +41,9 @@
      <Compile Include="Assets\Script\GameSweet.cs" />
      <Compile Include="Assets\Script\GameManager.cs" />
      <Compile Include="Assets\Script\ClearSweet.cs" />
+     <Compile Include="Assets\Script\ClearRainbow.cs" />
      <Compile Include="Assets\Script\ClearLineSweet.cs" />
+     <Compile Include="Assets\Script\LoadGame.cs" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.33f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>

@@ -11,7 +11,7 @@ public class ClearSweet : MonoBehaviour
     public AudioClip DestroyAudio;
     void Awake()
     {
-        sweet = GetComponent<GameSweet>();
+        sweet = GetComponent<GameSweet>();      
     }
     public virtual void Clear()
     {

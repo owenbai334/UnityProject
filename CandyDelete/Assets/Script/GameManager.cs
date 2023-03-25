@@ -52,15 +52,22 @@ public class GameManager : MonoBehaviour
     float currentScore;
     [HideInInspector]
     public GameObject gameOverPanel;
-    float AnimeTime;
+    float AnimeTime=0;
     bool isEsc = false;
+    [HideInInspector]
     public Text GameMessager;
     bool IsPause = true;
     [HideInInspector]
     public Text LastGameScore;
+    public int BarrierCount;
+    public Scrollbar MusicScrollbar;
+    public Text MuscText;
+    public AudioSource audioSource;
     void Awake()
     {
         Instance = this;
+        Time.timeScale = 1;
+        AnimeTime=0;
     }
     //0.65 0.49
     void Start()
@@ -85,15 +92,12 @@ public class GameManager : MonoBehaviour
 
         for (int x = 0; x < GridColume; x++)
         {
-            for (int y = 0; y < GridRow; y++)
+            for (int y = 0; y < GridRow;  y++)
             {
                 CreateCandy(x, y, SweetType.EMPTY);
             }
         }
-
-        Destroy(sweets[4, 4].gameObject);
-        CreateCandy(4, 4, SweetType.BARRIER);
-
+        UseBarrier();
         StartCoroutine(AllFill());
     }
     void Update()
@@ -103,9 +107,9 @@ public class GameManager : MonoBehaviour
             AnimeTime += Time.deltaTime;
             if (AnimeTime >= 0.40f)
             {
+                Time.timeScale = 0;
                 isEsc = false;
                 AnimeTime = 0;
-                Time.timeScale = 0;
             }
         }
         gameTime -= Time.deltaTime;
@@ -137,6 +141,46 @@ public class GameManager : MonoBehaviour
             }
         }
         PauseGame();
+
+        for (int x = 0; x < GridColume; x++)
+        {
+            for (int y = 0; y < GridRow; y++)
+            {
+                if (sweets[x, y] == null)
+                {
+                    CreateCandy(x, y, SweetType.EMPTY);
+                    StartCoroutine(AllFill());
+                }
+
+            }
+        }
+    }
+    void UseBarrier()
+    {
+        int tempBarrierCount = 0;
+        while (tempBarrierCount != BarrierCount)
+        {
+            bool canCreate = true;
+            int x = Random.Range(1, GridColume - 1);
+            int y = Random.Range(1, GridRow - 1);
+            for (int X = -1; X <= 1; X++)
+            {
+                for (int Y = -1; Y <= 1; Y++)
+                {
+                    if (sweets[x + X, y + Y].Type == SweetType.BARRIER)
+                    {
+                        canCreate = false;
+                    }
+                }
+            }
+            if (canCreate)
+            {
+                Destroy(sweets[x, y].gameObject);
+                CreateCandy(x, y, SweetType.BARRIER);
+                tempBarrierCount++;
+            }
+        }
+
     }
     #region "填充糖果"
     public Vector2 CorrectPositon(int x, int y)
@@ -183,6 +227,7 @@ public class GameManager : MonoBehaviour
 
                 if (sweets[x, y].CanMove())//如果無法移動，則無法往下填充
                 {
+
                     GameSweet sweetBelow = sweets[x, y + 1];
                     if (sweetBelow.Type == SweetType.EMPTY)//垂直填充
                     {
@@ -195,18 +240,16 @@ public class GameManager : MonoBehaviour
                     //斜向填充
                     else
                     {
-                        int downX = x + 1;
-
-                        if (downX >= 0 && downX < GridColume)
+                        for (int i = -1; i <= 1; i++)
                         {
-                            GameSweet downSweet = sweets[downX, y + 1];
-                            if (downSweet.Type == SweetType.EMPTY)
+                            if (x + i >= 0 && x + i < GridColume)
                             {
+                                GameSweet sweetDown = sweets[x + i, y + 1];
                                 bool canFill = true;//用來判斷是否可以垂直填充
 
                                 for (int aboveY = y; aboveY >= 0; aboveY--)
                                 {
-                                    GameSweet SweetAbove = sweets[downX, aboveY];
+                                    GameSweet SweetAbove = sweets[x + i, aboveY];
                                     if (SweetAbove.CanMove())
                                     {
                                         break;
@@ -219,12 +262,14 @@ public class GameManager : MonoBehaviour
                                 }
                                 if (!canFill)
                                 {
-                                    Destroy(downSweet.gameObject);
-                                    sweet.MovedComponent.Move(downX, y + 1, fillTime);
-                                    sweets[downX, y + 1] = sweet;
-                                    CreateCandy(x, y, SweetType.EMPTY);
-                                    FilledNotFinished = true;
-                                    break;
+                                    if (sweetDown.Type == SweetType.EMPTY)//垂直填充
+                                    {
+                                        Destroy(sweetDown.gameObject);
+                                        sweet.MovedComponent.Move(x + i, y + 1, fillTime);
+                                        sweets[x + i, y + 1] = sweet;
+                                        CreateCandy(x, y, SweetType.EMPTY);
+                                        FilledNotFinished = true;
+                                    }
                                 }
                             }
                         }
@@ -232,7 +277,6 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-
         //最上排的特殊情況
         for (int x = 0; x < GridColume; x++)
         {
@@ -249,7 +293,6 @@ public class GameManager : MonoBehaviour
                 FilledNotFinished = true;
             }
         }
-
         return FilledNotFinished;
     }
     #endregion
@@ -267,15 +310,35 @@ public class GameManager : MonoBehaviour
             sweets[sweetMe.X, sweetMe.Y] = sweetNeighbor;
             sweets[sweetNeighbor.X, sweetNeighbor.Y] = sweetMe;
 
-            if (MatchSweets(sweetMe, sweetNeighbor.X, sweetNeighbor.Y) != null || MatchSweets(sweetNeighbor, sweetMe.X, sweetMe.Y) != null)
+            if (MatchSweets(sweetMe, sweetNeighbor.X, sweetNeighbor.Y) != null || MatchSweets(sweetNeighbor, sweetMe.X, sweetMe.Y) != null || sweetMe.Type == SweetType.RAINBOWCANDY || sweetNeighbor.Type == SweetType.RAINBOWCANDY)
             {
                 int tempX = sweetMe.X;
                 int tempY = sweetMe.Y;
-
                 sweetMe.MovedComponent.Move(sweetNeighbor.X, sweetNeighbor.Y, fillTime);
                 sweetNeighbor.MovedComponent.Move(tempX, tempY, fillTime);
+                if (sweetMe.Type == SweetType.RAINBOWCANDY && sweetMe.CanClear() && sweetNeighbor.CanClear())
+                {
+                    ClearRainbow clearSweet = sweetMe.GetComponent<ClearRainbow>();
+                    if (clearSweet != null)
+                    {
+                        clearSweet.WillClearAllSweet = sweetNeighbor.ColoredComponent.Color;
+                    }
+                    ClearCandy(sweetMe.X, sweetMe.Y);
+                }
+                if (sweetNeighbor.Type == SweetType.RAINBOWCANDY && sweetNeighbor.CanClear() && sweetMe.CanClear())
+                {
+                    ClearRainbow clearSweet = sweetNeighbor.GetComponent<ClearRainbow>();
+                    if (clearSweet != null)
+                    {
+                        clearSweet.WillClearAllSweet = sweetMe.ColoredComponent.Color;
+                    }
+                    ClearCandy(sweetNeighbor.X, sweetNeighbor.Y);
+                }
                 ClearAllMatchedSweets();
                 StartCoroutine(AllFill());
+                pressedSweet = null;
+                enterSweet = null;
+
             }
             else
             {
@@ -565,11 +628,16 @@ public class GameManager : MonoBehaviour
                         int SpecialSweetX = RandomSweet.X;
                         int SpecialSweetY = RandomSweet.Y;
 
+                        //四個產生特殊糖果
                         if (matchList.Count == 4)
                         {
                             SpecialSweetType = (SweetType)Random.Range((int)SweetType.ROW_CLEAR, (int)(SweetType.COLUME_CLEAR));
                         }
-
+                        //五個以上產生彩虹堂
+                        else if (matchList.Count >= 5)
+                        {
+                            SpecialSweetType = SweetType.RAINBOWCANDY;
+                        }
                         for (int i = 0; i < matchList.Count; i++)
                         {
                             if (ClearCandy(matchList[i].X, matchList[i].Y))
@@ -585,6 +653,10 @@ public class GameManager : MonoBehaviour
                             if ((SpecialSweetType == SweetType.ROW_CLEAR || SpecialSweetType == SweetType.COLUME_CLEAR) && newSweet.CanColor() && matchList[0].CanColor())
                             {
                                 newSweet.ColoredComponent.SetColor(matchList[0].ColoredComponent.Color);
+                            }
+                            else if (SpecialSweetType == SweetType.RAINBOWCANDY && newSweet.CanColor())
+                            {
+                                newSweet.ColoredComponent.SetColor(ColorSweet.ColorType.RAINBOW);
                             }
                         }
                     }
@@ -634,29 +706,46 @@ public class GameManager : MonoBehaviour
             ClearCandy(column, y);
         }
     }
+    public void ClearRainbow(ColorSweet.ColorType type)
+    {
+        for (int x = 0; x < GridColume; x++)
+        {
+            for (int y = 0; y < GridRow; y++)
+            {
+                if (sweets[x, y].CanClear() && (sweets[x, y].ColoredComponent.Color == type || type == ColorSweet.ColorType.RAINBOW))
+                {
+                    ClearCandy(x, y);
+                }
+            }
+        }
+    }
     #endregion
     #region "遊戲選單"
     public void PauseGame()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            gameOverPanel.SetActive(IsPause);
-            LastGameScore.text = "分數:" + playerScore.ToString();
-            IsPause = !IsPause;
-            if (!IsPause)
+            if (AnimeTime <= 0 || AnimeTime >= 0.40f)
             {
-                isEsc = true;
-                GameMessager.text = "遊戲暫停";
-            }
-            else
-            {
-                Time.timeScale = 1;
+                gameOverPanel.SetActive(IsPause);
+                LastGameScore.text = "分數:" + playerScore.ToString();
+                IsPause = !IsPause;
+                if (!IsPause)
+                {
+                    isEsc = true;
+                    GameMessager.text = "遊戲暫停";
+                }
+                else
+                {
+                    Time.timeScale = 1;
+                }
             }
         }
     }
     public void ReturnGame()
     {
         Time.timeScale = 1;
+        AnimeTime=0;
         SceneManager.LoadScene("Game");
     }
     public void QuitMain()
@@ -664,5 +753,9 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("Title");
     }
     #endregion
-
+    public void ScrollBackMusic()
+    {
+        MuscText.text = ((int)(MusicScrollbar.value * 100)).ToString();
+        audioSource.volume = MusicScrollbar.value * 100;
+    }
 }
