@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
     float currentScore;
     [HideInInspector]
     public GameObject gameOverPanel;
-    float AnimeTime=0;
+    float AnimeTime = 0;
     bool isEsc = false;
     [HideInInspector]
     public Text GameMessager;
@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         Time.timeScale = 1;
-        AnimeTime=0;
+        AnimeTime = 0;
     }
     //0.65 0.49
     void Start()
@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour
 
         for (int x = 0; x < GridColume; x++)
         {
-            for (int y = 0; y < GridRow;  y++)
+            for (int y = 0; y < GridRow; y++)
             {
                 CreateCandy(x, y, SweetType.EMPTY);
             }
@@ -141,17 +141,15 @@ public class GameManager : MonoBehaviour
             }
         }
         PauseGame();
-
+        StartCoroutine(AllFill());
         for (int x = 0; x < GridColume; x++)
         {
             for (int y = 0; y < GridRow; y++)
             {
-                if (sweets[x, y] == null)
+                if (sweets[x, y] == null||sweets[x,y].Type==SweetType.EMPTY)
                 {
                     CreateCandy(x, y, SweetType.EMPTY);
-                    StartCoroutine(AllFill());
                 }
-
             }
         }
     }
@@ -712,7 +710,7 @@ public class GameManager : MonoBehaviour
         {
             for (int y = 0; y < GridRow; y++)
             {
-                if (sweets[x, y].CanClear() && (sweets[x, y].ColoredComponent.Color == type || type == ColorSweet.ColorType.RAINBOW))
+                if (sweets[x, y].CanColor() && (sweets[x, y].ColoredComponent.Color == type || type == ColorSweet.ColorType.RAINBOW))
                 {
                     ClearCandy(x, y);
                 }
@@ -745,7 +743,7 @@ public class GameManager : MonoBehaviour
     public void ReturnGame()
     {
         Time.timeScale = 1;
-        AnimeTime=0;
+        AnimeTime = 0;
         SceneManager.LoadScene("Game");
     }
     public void QuitMain()

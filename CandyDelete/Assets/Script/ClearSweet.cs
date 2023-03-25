@@ -35,7 +35,7 @@ public class ClearSweet : MonoBehaviour
             }
             AudioSource.PlayClipAtPoint(DestroyAudio,transform.position);
             yield return new WaitForSeconds(animationClear.length);
-            Destroy(gameObject);
+            Destroy(this.gameObject);
         }
     }
 }
