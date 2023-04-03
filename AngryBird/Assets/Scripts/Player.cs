@@ -9,13 +9,17 @@ public class Player : MonoBehaviour
     public float maxDistance = 3f;
     [HideInInspector]
     public SpringJoint2D springJointBird;
+    [HideInInspector]
+    public CapsuleCollider2D colliderBird;
     Rigidbody2D rigidBodyBird;
     public LineRenderer[] shootLine;
     public GameObject explosion;
+    bool isTouch = false;
     void Awake()
     {
         springJointBird = GetComponent<SpringJoint2D>();
         rigidBodyBird = GetComponent<Rigidbody2D>();
+        colliderBird = GetComponent<CapsuleCollider2D>();
     }
 
     // Update is called once per frame
@@ -32,13 +36,22 @@ public class Player : MonoBehaviour
         {
             isClick = true;
             rigidBodyBird.isKinematic = true;
+            rigidBodyBird.constraints = RigidbodyConstraints2D.None;
         }
     }
     void OnMouseUp()
     {
-        isClick = false;
-        rigidBodyBird.isKinematic = false;
-        Invoke("Fly", 0.1f);
+        if (springJointBird.enabled)
+        {
+            isClick = false;
+            rigidBodyBird.isKinematic = false;
+            Invoke("Fly", 0.1f);
+            //禁用劃線
+            for (int i = 0; i < shootLine.Length; i++)
+            {
+                shootLine[i].enabled=false;
+            }
+        }
     }
     void BirdClicked()
     {
@@ -55,12 +68,12 @@ public class Player : MonoBehaviour
     void Fly()
     {
         springJointBird.enabled = false;
-        Invoke("Next",5f);
     }
     void Line()
     {
         for (int i = 0; i < shootLine.Length; i++)
         {
+            shootLine[i].enabled=true;
             shootLine[i].SetPosition(0, BirdPoint[i].position);
             shootLine[i].SetPosition(1, transform.position);
         }
@@ -69,7 +82,12 @@ public class Player : MonoBehaviour
     {
         GameManager.Instance.birds.Remove(this);
         Destroy(this.gameObject);
-        Instantiate(explosion,this.transform.position,Quaternion.identity);
+        Instantiate(explosion, this.transform.position, Quaternion.identity);
         GameManager.Instance.NextBird();
+    }
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        isTouch = true;
+        Invoke("Next",3f);
     }
 }
