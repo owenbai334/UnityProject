@@ -9,9 +9,8 @@ public class GameManager : MonoBehaviour
     static GameManager instance;
     public static GameManager Instance { get => instance; set => instance = value; }
     Vector3 originPosition;
-    public GameObject BackGround;
-    public GameObject Win;
-    public GameObject Lose;
+    //0 背景, 1 贏, 2 輸
+    public GameObject[] Menus;
     void Awake()
     {
         Instance = this;
@@ -41,14 +40,14 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                BackGround.SetActive(true);
-                Lose.SetActive(true);
+                Menus[0].SetActive(true);
+                Menus[2].SetActive(true);
             }
         }
         else
         {
-            BackGround.SetActive(true);
-            Win.SetActive(true);
+            Menus[0].SetActive(true);
+            Menus[1].SetActive(true);
         }
     }
     public void ShowStarts()
