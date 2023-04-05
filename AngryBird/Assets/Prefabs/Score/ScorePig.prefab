@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 830068266367110139}
   - component: {fileID: 830068266367110138}
   m_Layer: 0
-  m_Name: Score
+  m_Name: ScorePig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

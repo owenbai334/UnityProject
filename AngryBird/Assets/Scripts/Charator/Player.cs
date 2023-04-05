@@ -15,11 +15,13 @@ public class Player : MonoBehaviour
     public LineRenderer[] shootLine;
     public GameObject explosion;
     bool isTouch = false;
+    TextMyTrail textMyTrail;
     void Awake()
     {
         springJointBird = GetComponent<SpringJoint2D>();
         rigidBodyBird = GetComponent<Rigidbody2D>();
         colliderBird = GetComponent<CapsuleCollider2D>();
+        textMyTrail = GetComponent<TextMyTrail>();
     }
 
     // Update is called once per frame
@@ -68,6 +70,7 @@ public class Player : MonoBehaviour
     void Fly()
     {
         springJointBird.enabled = false;
+        textMyTrail.TrailStart();
     }
     void Line()
     {
@@ -80,6 +83,7 @@ public class Player : MonoBehaviour
     }
     void Next()
     {
+        textMyTrail.TrailEnd();
         GameManager.Instance.birds.Remove(this);
         Destroy(this.gameObject);
         Instantiate(explosion, this.transform.position, Quaternion.identity);

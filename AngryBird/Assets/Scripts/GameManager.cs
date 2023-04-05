@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour
     static GameManager instance;
     public static GameManager Instance { get => instance; set => instance = value; }
     Vector3 originPosition;
+    public GameObject BackGround;
+    public GameObject Win;
+    public GameObject Lose;
     void Awake()
     {
         Instance = this;
@@ -38,12 +41,18 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("輸了");
+                BackGround.SetActive(true);
+                Lose.SetActive(true);
             }
         }
         else
         {
-            Debug.Log("贏了");
+            BackGround.SetActive(true);
+            Win.SetActive(true);
         }
+    }
+    public void ShowStarts()
+    {
+        Debug.Log("成功調用ShowStarts");
     }
 }
