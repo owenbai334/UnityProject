@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4989889790775407502}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: ScorePosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 4058975399925290743}
   - component: {fileID: 8553352199946013929}
   - component: {fileID: 4927831725861098488}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Pigs
   m_TagString: Enemy
   m_Icon: {fileID: 0}

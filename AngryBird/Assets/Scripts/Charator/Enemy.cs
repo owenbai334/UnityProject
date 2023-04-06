@@ -33,9 +33,9 @@ public class Enemy : MonoBehaviour
         {
             GameManager.Instance.pigs.Remove(this);
         }
-        Destroy(this.gameObject);
         Instantiate(Explosion,this.transform.position,Quaternion.identity);
         GameObject tempScore = Instantiate(Score,ScorePosition.transform.position,Quaternion.identity);
+        Destroy(this.gameObject);
         Destroy(tempScore,1.5f);
     }
 }

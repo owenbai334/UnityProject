@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7541116293603577907}
   - component: {fileID: 3513473135007164277}
   - component: {fileID: 7299406272411837205}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,8 +117,8 @@ GameObject:
   - component: {fileID: 6726035458374764010}
   - component: {fileID: 6726035458374764013}
   - component: {fileID: 1738928590981504144}
-  m_Layer: 6
-  m_Name: Birds
+  m_Layer: 0
+  m_Name: RedBird
   m_TagString: Bird
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
