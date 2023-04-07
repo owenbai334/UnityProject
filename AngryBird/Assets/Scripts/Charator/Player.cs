@@ -5,17 +5,24 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     bool isClick = false;
+    bool isTouch = false;
+    float maxDistance = 1.8f;
+    float CameraSpeed = 3f; 
+    TextMyTrail textMyTrail;
+    Rigidbody2D rigidBodyBird;
+    #region "public
     public Transform[] BirdPoint;
-    public float maxDistance = 3f;
     [HideInInspector]
     public SpringJoint2D springJointBird;
     [HideInInspector]
     public CapsuleCollider2D colliderBird;
-    Rigidbody2D rigidBodyBird;
     public LineRenderer[] shootLine;
+    [HideInInspector]
     public GameObject explosion;
-    bool isTouch = false;
-    TextMyTrail textMyTrail;
+    //0 選擇 1飛行 2死亡
+    [HideInInspector]
+    public AudioClip[] audios;
+    #endregion
     void Awake()
     {
         springJointBird = GetComponent<SpringJoint2D>();
@@ -31,11 +38,13 @@ public class Player : MonoBehaviour
         {
             BirdClicked();
         }
+        CameraFollow();
     }
     void OnMouseDown()
     {
         if (springJointBird.enabled)
         {
+            GameManager.Instance.AudioPlay(audios[0]);
             isClick = true;
             rigidBodyBird.isKinematic = true;
             rigidBodyBird.constraints = RigidbodyConstraints2D.None;
@@ -43,16 +52,13 @@ public class Player : MonoBehaviour
     }
     void OnMouseUp()
     {
-        if (springJointBird.enabled)
+        isClick = false;
+        rigidBodyBird.isKinematic = false;
+        Invoke("Fly", 0.1f);
+        //禁用劃線
+        for (int i = 0; i < shootLine.Length; i++)
         {
-            isClick = false;
-            rigidBodyBird.isKinematic = false;
-            Invoke("Fly", 0.1f);
-            //禁用劃線
-            for (int i = 0; i < shootLine.Length; i++)
-            {
-                shootLine[i].enabled=false;
-            }
+            shootLine[i].enabled = false;
         }
     }
     void BirdClicked()
@@ -69,6 +75,7 @@ public class Player : MonoBehaviour
     }
     void Fly()
     {
+        GameManager.Instance.AudioPlay(audios[1]);
         springJointBird.enabled = false;
         textMyTrail.TrailStart();
     }
@@ -76,13 +83,14 @@ public class Player : MonoBehaviour
     {
         for (int i = 0; i < shootLine.Length; i++)
         {
-            shootLine[i].enabled=true;
+            shootLine[i].enabled = true;
             shootLine[i].SetPosition(0, BirdPoint[i].position);
             shootLine[i].SetPosition(1, transform.position);
         }
     }
     void Next()
     {
+        GameManager.Instance.AudioPlay(audios[2]);
         textMyTrail.TrailEnd();
         GameManager.Instance.birds.Remove(this);
         Destroy(this.gameObject);
@@ -91,7 +99,13 @@ public class Player : MonoBehaviour
     }
     void OnCollisionEnter2D(Collision2D other)
     {
+        GameManager.Instance.DisAudio();
         isTouch = true;
-        Invoke("Next",3f);
+        Invoke("Next", 3f);
+    }
+    public void CameraFollow()
+    {
+        float posX = this.transform.position.x;
+        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position,new Vector3(Mathf.Clamp(posX,0,17),Camera.main.transform.position.y,Camera.main.transform.position.z),CameraSpeed*Time.deltaTime);
     }
 }

@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class PauseGame : MonoBehaviour
 {
-    [HideInInspector]
     public Animator anima;
     bool IsPause = false;
-    [HideInInspector]
     public GameObject[] Menus;
     public void Pause()
     {
+        GameManager.Instance.isClickAudioBtn = false;
+        GameManager.Instance.Menus[4].SetActive(false);
         IsPause =!IsPause;
         if(IsPause)
         {

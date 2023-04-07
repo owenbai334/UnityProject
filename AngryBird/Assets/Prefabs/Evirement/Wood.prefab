@@ -182,3 +182,6 @@ MonoBehaviour:
   Score: {fileID: 6909770751178638876, guid: 61e65c568c4032548947df39a0a9b3c1, type: 3}
   ScorePosition: {fileID: 223499062}
   isPig: 0
+  audios:
+  - {fileID: 8300000, guid: 38333a1d7bb5eb347873760ab87f5241, type: 3}
+  - {fileID: 8300000, guid: 770c652fc74c5bf4ab95ce51ac23e01e, type: 3}
