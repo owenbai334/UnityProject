@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    SpriteRenderer spriteRenderer;
     public float MaxSpeed = 10f;
     public float MinSpeed = 5f;
-    SpriteRenderer spriteRenderer;
     public Sprite hurt;
     public GameObject Explosion;
     public GameObject Score;
@@ -20,6 +20,10 @@ public class Enemy : MonoBehaviour
     }
     void OnCollisionEnter2D(Collision2D other)
     {
+        if(other.gameObject.tag=="Bird")
+        {
+            other.transform.GetComponent<Player>().BirdHurt();
+        }
         if (other.relativeVelocity.magnitude > MaxSpeed)
         {
             Die();
@@ -33,7 +37,7 @@ public class Enemy : MonoBehaviour
             }
         }
     }
-    void Die()
+    public void Die()
     {
         if (audios != null)
         {

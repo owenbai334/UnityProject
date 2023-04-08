@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 8721580182185397045}
   m_Layer: 0
   m_Name: Wood
-  m_TagString: Untagged
+  m_TagString: Barrier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -183,5 +183,5 @@ MonoBehaviour:
   ScorePosition: {fileID: 223499062}
   isPig: 0
   audios:
-  - {fileID: 8300000, guid: 38333a1d7bb5eb347873760ab87f5241, type: 3}
-  - {fileID: 8300000, guid: 770c652fc74c5bf4ab95ce51ac23e01e, type: 3}
+  - {fileID: 8300000, guid: d074aa2cbd0b84145a50885fcafb43ac, type: 3}
+  - {fileID: 8300000, guid: 2d6bbbcb4d5374847a18d98156ce0e40, type: 3}

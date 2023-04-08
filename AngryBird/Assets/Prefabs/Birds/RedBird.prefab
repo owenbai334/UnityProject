@@ -259,21 +259,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 400c4ee466d72be42a9c9b220c75702c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  springJointBird: {fileID: 0}
+  colliderBird: {fileID: 0}
   BirdPoint:
   - {fileID: 0}
   - {fileID: 0}
-  maxDistance: 1.8
-  springJointBird: {fileID: 0}
-  colliderBird: {fileID: 0}
   shootLine:
   - {fileID: 0}
   - {fileID: 0}
-  explosion: {fileID: 8095099057569248317, guid: 4b55afdb85ff23c4f8f183d43a30b745, type: 3}
-  CameraSpeed: 3
   audios:
   - {fileID: 8300000, guid: 7d7ca4a941367de4d91b7f7fe3144d33, type: 3}
   - {fileID: 8300000, guid: fb2d6480c97909e4e8701020a3791c9b, type: 3}
   - {fileID: 8300000, guid: 43d9a2e611f2f024d9c9aa6105f34376, type: 3}
+  explosion: {fileID: 8095099057569248317, guid: 4b55afdb85ff23c4f8f183d43a30b745, type: 3}
+  Hurt: {fileID: 8669725828687014486, guid: d79c43203af3af84587f6f0328691b67, type: 3}
+  color: 0
 --- !u!114 &1738928590981504144
 MonoBehaviour:
   m_ObjectHideFlags: 0
