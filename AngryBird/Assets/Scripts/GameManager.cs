@@ -134,8 +134,4 @@ public class GameManager : MonoBehaviour
         audios[1].clip = audio;
         audios[1].Play();
     }
-    public void DisAudio()
-    {
-        audios[1].clip = null;
-    }
 }

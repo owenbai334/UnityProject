@@ -55,7 +55,7 @@ public class Player : MonoBehaviour
         {
             BirdClicked();
         }
-        if (isFly)
+        if (isFly||(color==BirdType.BLACK&&isTouch))
         {
             UseSkill();
         }
@@ -128,7 +128,6 @@ public class Player : MonoBehaviour
                 rigidBodyBird.velocity = speed;
                 break;
             case BirdType.BLACK:
-                BirdHurt();
                 if(blocks.Count >0 && blocks!=null)
                 {
                     for (int i = 0; i < blocks.Count; i++)
@@ -160,11 +159,6 @@ public class Player : MonoBehaviour
     void OnClear()
     {
         rigidBodyBird.velocity = Vector3.zero;
-        Instantiate(explosion, this.transform.position, Quaternion.identity);
-        GameManager.Instance.DisAudio();
-        textMyTrail.TrailEnd();
-        render.enabled = false;
-        colliderBird.enabled=false;
         Next();
     }
     #endregion
@@ -181,15 +175,11 @@ public class Player : MonoBehaviour
         textMyTrail.TrailEnd();
         GameManager.Instance.birds.Remove(this);
         Destroy(this.gameObject);
-        if(color != BirdType.BLACK)
-        {
-            Instantiate(explosion, this.transform.position, Quaternion.identity);
-        }
+        Instantiate(explosion, this.transform.position, Quaternion.identity);
         GameManager.Instance.NextBird();
     }
     void OnCollisionEnter2D(Collision2D other)
     {
-        GameManager.Instance.DisAudio();
         isTouch = true;
         isFly = false;
         Invoke("Next", 3f);

@@ -2931,8 +2931,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   birds:
-  - {fileID: 6726035458374412643}
   - {fileID: 6726035460330440471}
+  - {fileID: 6726035458374412643}
   - {fileID: 1704976660}
   - {fileID: 519311484}
   pigs:
@@ -7424,11 +7424,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4299806674617391660, guid: 2d83383809382674c892ed38e9145bb0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.28
+      value: -6.21
       objectReference: {fileID: 0}
     - target: {fileID: 4299806674617391660, guid: 2d83383809382674c892ed38e9145bb0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.58
+      value: -1.25
       objectReference: {fileID: 0}
     - target: {fileID: 4299806674617391660, guid: 2d83383809382674c892ed38e9145bb0, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7623,11 +7623,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2595114633663895448, guid: 890bd75ab2bc6a746b4f96adc846897d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.04
+      value: -8.19
       objectReference: {fileID: 0}
     - target: {fileID: 2595114633663895448, guid: 890bd75ab2bc6a746b4f96adc846897d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.31
+      value: -2.62
       objectReference: {fileID: 0}
     - target: {fileID: 2595114633663895448, guid: 890bd75ab2bc6a746b4f96adc846897d, type: 3}
       propertyPath: m_LocalPosition.z
