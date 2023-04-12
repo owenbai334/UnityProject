@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 25.1, y: -30.600067}
+  m_AnchoredPosition: {x: 16.1, y: -30.600067}
   m_SizeDelta: {x: 21, y: 19}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8741078743569398848
@@ -274,7 +274,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8741078744066956324}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6887727004071806784}
+        m_TargetAssemblyTypeName: LevilSelect, Assembly-CSharp
+        m_MethodName: Select
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &6887727004071806784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,6 +309,10 @@ MonoBehaviour:
   - {fileID: -6736699522915064005, guid: 28c15e8fbc3eb974e86e3b7e7e103e91, type: 3}
   - {fileID: 2911096096544591239, guid: 28c15e8fbc3eb974e86e3b7e7e103e91, type: 3}
   Num: {fileID: 8741078744387672156}
+  stars:
+  - {fileID: 8741078744622093047}
+  - {fileID: 8741078743828996544}
+  - {fileID: 8741078743569398853}
 --- !u!1 &8741078744387672158
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,7 +442,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -28.6, y: -30.600067}
+  m_AnchoredPosition: {x: -20, y: -30.600067}
   m_SizeDelta: {x: 21, y: 19}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8741078744622093042

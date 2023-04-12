@@ -4,12 +4,21 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+[System.Serializable]
+class SaveData
+{
+    public int TotalStar;
+    public int[] mapNum = new int[8 * 55];
+}
 public class GameManager : MonoBehaviour
 {
+    public const string PLAYER_DATA_FILE_NAME = "player.game";
     static GameManager instance;
     public static GameManager Instance { get => instance; set => instance = value; }
     Vector3 originPosition;
     int starLength = 0;
+    int starsNum;
+    static int[] mapNum = new int[8 * 55];
     #region "Hide"
     [HideInInspector]
     public GameObject[] Stars;
@@ -27,30 +36,40 @@ public class GameManager : MonoBehaviour
     public List<Enemy> pigs;
     [HideInInspector]
     public bool isClickAudioBtn = false;
-    #endregion
-    #region "public"
     //0 背景, 1 贏, 2 輸 3暫停 4音樂
+    [HideInInspector]
     public GameObject[] Menus;
+    [HideInInspector]
     public float starTime;
     #endregion
+    #region "public"
+    public int TotalStar = 0;
+    #endregion
+    public static int LevilNum = 1;
+    public static int realStar = 0;
     void Awake()
     {
-        UseButton();
         Time.timeScale = 1;
         Instance = this;
-        for (int i = 0; i < GameObject.Find("Bird").transform.childCount; i++)
+        Scene scene = SceneManager.GetActiveScene();
+        if (scene.name == "Game")
         {
-            birds.Add(GameObject.Find("Bird").transform.GetChild(i).GetComponent<Player>());
+            Instantiate(Resources.Load($"{MapManager.SelectMap}/{LevilNum}"));
+            UseButton();
+            for (int i = 0; i < GameObject.Find("Bird").transform.childCount; i++)
+            {
+                birds.Add(GameObject.Find("Bird").transform.GetChild(i).GetComponent<Player>());
+            }
+            for (int i = 0; i < GameObject.Find("Pig").transform.childCount; i++)
+            {
+                pigs.Add(GameObject.Find("Pig").transform.GetChild(i).GetComponent<Enemy>());
+            }
+            if (birds.Count > 0)
+            {
+                originPosition = birds[0].transform.position;
+            }
+            Init();
         }
-        for (int i = 0; i < GameObject.Find("Pig").transform.childCount; i++)
-        {
-            pigs.Add(GameObject.Find("Pig").transform.GetChild(i).GetComponent<Enemy>());
-        }
-        if (birds.Count > 0)
-        {
-            originPosition = birds[0].transform.position;
-        }
-        Init();
     }
     void Init()
     {
@@ -87,18 +106,18 @@ public class GameManager : MonoBehaviour
         {
             buttons[i].enabled = false;
         }
-    } 
+    }
     void UseButton()
     {
         for (int i = 0; i < buttons.Length; i++)
         {
             buttons[i].enabled = true;
         }
-    } 
+    }
     public void ShowStarts()
     {
         starLength = birds.Count;
-        if(birds.Count>2)
+        if (birds.Count > 2)
         {
             starLength = 2;
         }
@@ -106,11 +125,13 @@ public class GameManager : MonoBehaviour
     }
     IEnumerator Show()
     {
-        for(int i = 0; i < starLength+1; i++) 
+        for (starsNum = 0; starsNum < starLength + 1; starsNum++)
         {
-            Stars[i].SetActive(true);
+            Stars[starsNum].SetActive(true);
             yield return new WaitForSeconds(starTime);
         }
+        realStar = starsNum;
+        SaveStar();
     }
     public void Replay()
     {
@@ -120,6 +141,7 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene("Levil");
     }
+    #region "Audio"
     public void AudioPlay()
     {
         isClickAudioBtn = !isClickAudioBtn;
@@ -135,12 +157,69 @@ public class GameManager : MonoBehaviour
     }
     void VolumeAdjustment(int index)
     {
-        Nums[index].text = ((int)(sliders[index].value*100)).ToString();
-        audios[index].volume = sliders[index].value;       
+        Nums[index].text = ((int)(sliders[index].value * 100)).ToString();
+        audios[index].volume = sliders[index].value;
     }
     public void AudioPlay(AudioClip audio)
     {
         audios[1].clip = audio;
         audios[1].Play();
     }
+    #endregion
+    #region "Json"
+    public void SaveStar()
+    {
+        SaveJson.SaveByjson(PLAYER_DATA_FILE_NAME, Saveing());
+    }
+    public void Load()
+    {
+        LoadJson();
+    }
+    void LoadJson()
+    {
+        var SaveData = SaveJson.LoadFromJson<SaveData>(PLAYER_DATA_FILE_NAME);
+        LoadData(SaveData);
+    }
+    SaveData Saveing()
+    {
+        var SaveData = new SaveData();
+        int index = MapManager.SelectMap * 55 + LevilNum - 1;
+        if(index<0)
+        {
+            index=0;
+        }
+        if(realStar>mapNum[index])
+        {
+            SaveData.mapNum[index] = realStar;
+            mapNum[index] = realStar;
+        }
+        else
+        {
+            SaveData.mapNum[index] = mapNum[index];
+        }
+        int tempTotalStar = 0;
+        for (int i = 0; i < SaveData.mapNum.Length; i++)
+        {
+            if (SaveData.mapNum[i] != 0)
+            {
+                tempTotalStar += SaveData.mapNum[i];
+            }
+        }
+        SaveData.TotalStar = tempTotalStar;
+        TotalStar = tempTotalStar;
+        return SaveData;
+    }
+    void LoadData(SaveData saveData)
+    {       
+        int tempTotalStar = 0;
+        for (int i = 0; i < saveData.mapNum.Length; i++)
+        {
+            if (saveData.mapNum[i] != 0)
+            {
+                tempTotalStar += saveData.mapNum[i];
+            }
+        }
+        TotalStar = tempTotalStar;
+    }
+    #endregion
 }

@@ -12,13 +12,17 @@ public class MapSelect : MonoBehaviour
     //0 鎖 1 星星 2 panel 3星星
     [HideInInspector]
     public GameObject[] Objects;
+    void Awake() 
+    {
+        GameManager.Instance.Load();
+    }
     void Start()
     {
         CheckStart();
     }
     void CheckStart()
     {
-        if (PlayerPrefs.GetInt("TatalStar", 0) >= StartsNum)
+        if (GameManager.Instance.TotalStar>= StartsNum)
         {
             IsSelect = true;
         }
@@ -36,28 +40,28 @@ public class MapSelect : MonoBehaviour
             switch (button.name)
             {
                 case "map1":
-                    MapManager.Instance.SelectMap = 0;
+                    MapManager.SelectMap = 0;
                     break;
                 case "map2":
-                    MapManager.Instance.SelectMap = 1;
+                    MapManager.SelectMap = 1;
                     break;
                 case "map3":
-                    MapManager.Instance.SelectMap = 2;
+                    MapManager.SelectMap = 2;
                     break;
                 case "map4":
-                    MapManager.Instance.SelectMap = 3;
+                    MapManager.SelectMap = 3;
                     break;
                 case "map5":
-                    MapManager.Instance.SelectMap = 4;
+                    MapManager.SelectMap = 4;
                     break;
                 case "map6":
-                    MapManager.Instance.SelectMap = 5;
+                    MapManager.SelectMap = 5;
                     break;
                 case "map7":
-                    MapManager.Instance.SelectMap = 6;
+                    MapManager.SelectMap = 6;
                     break;
                 case "mapEgg":
-                    MapManager.Instance.SelectMap = 7;
+                    MapManager.SelectMap = 7;
                     break;
             }
             Objects[2].SetActive(true);

@@ -42,14 +42,15 @@
      <Compile Include="Assets\Scripts\Charator\Player.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\GameScene\PauseGame.cs" />
+     <Compile Include="Assets\Scripts\MapManager.cs" />
      <Compile Include="Assets\Scripts\GameMenu\LevilSelect.cs" />
      <Compile Include="Assets\Scripts\Effect\TextMyTrail.cs" />
      <Compile Include="Assets\GameMaterial\PocketRPG Trails\Scripts\Entities\BladeMaster.cs" />
      <Compile Include="Assets\GameMaterial\PocketRPG Trails\Scripts\Utility\AnimationController.cs" />
      <Compile Include="Assets\Scripts\Effect\Explosion.cs" />
      <Compile Include="Assets\Scripts\GameScene\Win.cs" />
-     <Compile Include="Assets\Scripts\MapManager.cs" />
      <Compile Include="Assets\Scripts\GameMenu\PanelGrid.cs" />
+     <Compile Include="Assets\Scripts\GameScene\SaveJson.cs" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.33f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>

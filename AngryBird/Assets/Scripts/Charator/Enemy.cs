@@ -5,12 +5,16 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     SpriteRenderer spriteRenderer;
+    #region "Hide"
+    [HideInInspector]
+    public Transform ScorePosition;
+    [HideInInspector]
+    public GameObject Explosion;
+    #endregion
     public float MaxSpeed = 10f;
     public float MinSpeed = 5f;
     public Sprite hurt;
-    public GameObject Explosion;
     public GameObject Score;
-    public Transform ScorePosition;
     public bool isPig;
     //0 受傷 1死亡
     public AudioClip[] audios;
