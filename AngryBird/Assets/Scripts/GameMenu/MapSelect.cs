@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class MapSelect : MonoBehaviour
 {
-    [HideInInspector]
-    public bool IsSelect = false;
+    bool IsSelect = false;
     [HideInInspector]
     public int StartsNum;
-    //0 鎖 1 星星
+    //0 鎖 1 星星 2 panel 3星星
+    [HideInInspector]
     public GameObject[] Objects;
     void Start()
     {
@@ -40,6 +40,24 @@ public class MapSelect : MonoBehaviour
                     break;
                 case "map2":
                     MapManager.Instance.SelectMap = 1;
+                    break;
+                case "map3":
+                    MapManager.Instance.SelectMap = 2;
+                    break;
+                case "map4":
+                    MapManager.Instance.SelectMap = 3;
+                    break;
+                case "map5":
+                    MapManager.Instance.SelectMap = 4;
+                    break;
+                case "map6":
+                    MapManager.Instance.SelectMap = 5;
+                    break;
+                case "map7":
+                    MapManager.Instance.SelectMap = 6;
+                    break;
+                case "mapEgg":
+                    MapManager.Instance.SelectMap = 7;
                     break;
             }
             Objects[2].SetActive(true);

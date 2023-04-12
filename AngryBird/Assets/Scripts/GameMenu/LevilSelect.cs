@@ -8,9 +8,8 @@ public class LevilSelect : MonoBehaviour
     bool IsSelect = false;
     bool canSee = false;
     Image image;
-    public Sprite[] sprite; 
+    public Sprite[] sprite;
     public Text Num;
-    [HideInInspector]
     void Awake() 
     {
         image = GetComponent<Image>();       

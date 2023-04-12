@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     float maxDistance = 1.8f;
     SpriteRenderer render;
     Rigidbody2D rigidBodyBird;
+    Transform[] BirdPoint = new Transform[2];
+    LineRenderer[] shootLine = new LineRenderer[2];
     List<Enemy> blocks = new List<Enemy>();
     #endregion
     #region "Hide"
@@ -19,14 +21,14 @@ public class Player : MonoBehaviour
     public SpringJoint2D springJointBird;
     [HideInInspector]
     public CapsuleCollider2D colliderBird;
+    [HideInInspector]
+    //0 選擇 1飛行 2死亡
+    public AudioClip[] audios;
+    [HideInInspector]
+    public GameObject explosion;
     TextMyTrail textMyTrail;
     #endregion
     #region "public
-    public Transform[] BirdPoint;
-    public LineRenderer[] shootLine;
-    //0 選擇 1飛行 2死亡
-    public AudioClip[] audios;
-    public GameObject explosion;
     public Sprite Hurt;
     [System.Serializable]
     public enum BirdType
@@ -48,6 +50,10 @@ public class Player : MonoBehaviour
         colliderBird = GetComponent<CapsuleCollider2D>();
         textMyTrail = GetComponent<TextMyTrail>();
         render = GetComponent<SpriteRenderer>();
+        BirdPoint[0] = transform.parent.parent.Find("Shot").GetChild(1).GetChild(0).GetComponent<Transform>();
+        BirdPoint[1] = transform.parent.parent.Find("Shot").GetChild(0).GetChild(0).GetComponent<Transform>();
+        shootLine[0] = transform.parent.parent.Find("Shot").GetChild(1).GetComponent<LineRenderer>();
+        shootLine[1] = transform.parent.parent.Find("Shot").GetChild(0).GetComponent<LineRenderer>();
     }
     void Update()
     {

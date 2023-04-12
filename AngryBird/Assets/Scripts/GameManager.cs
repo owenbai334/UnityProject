@@ -10,33 +10,42 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get => instance; set => instance = value; }
     Vector3 originPosition;
     int starLength = 0;
-    #region "public"
-    public List<Player> birds;
-    public List<Enemy> pigs;
-    //0 背景, 1 贏, 2 輸 3暫停 4音樂
-    public GameObject[] Menus;
+    #region "Hide"
     [HideInInspector]
     public GameObject[] Stars;
-    public float starTime;
-    //0背景 1音效
     [HideInInspector]
     public AudioSource[] audios;
-    //0背景 1音效
     [HideInInspector]
     public Text[] Nums;
-    //0背景 1音效
     [HideInInspector]
     public Slider[] sliders;
     [HideInInspector]
     public Button[] buttons;
     [HideInInspector]
+    public List<Player> birds;
+    [HideInInspector]
+    public List<Enemy> pigs;
+    [HideInInspector]
     public bool isClickAudioBtn = false;
+    #endregion
+    #region "public"
+    //0 背景, 1 贏, 2 輸 3暫停 4音樂
+    public GameObject[] Menus;
+    public float starTime;
     #endregion
     void Awake()
     {
         UseButton();
         Time.timeScale = 1;
         Instance = this;
+        for (int i = 0; i < GameObject.Find("Bird").transform.childCount; i++)
+        {
+            birds.Add(GameObject.Find("Bird").transform.GetChild(i).GetComponent<Player>());
+        }
+        for (int i = 0; i < GameObject.Find("Pig").transform.childCount; i++)
+        {
+            pigs.Add(GameObject.Find("Pig").transform.GetChild(i).GetComponent<Enemy>());
+        }
         if (birds.Count > 0)
         {
             originPosition = birds[0].transform.position;

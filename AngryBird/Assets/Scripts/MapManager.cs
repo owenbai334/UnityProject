@@ -6,10 +6,16 @@ using UnityEngine.UI;
 public class MapManager : MonoBehaviour
 {
     public int[] StartsNum;
+    #region "Hide"
+    [HideInInspector]
     public Text[] StartsText;
+    [HideInInspector]
     public MapSelect[] mapSelect;
+    [HideInInspector]
     public GameObject[] Objects;
+    [HideInInspector]
     public int SelectMap=-1;
+    #endregion
     static MapManager instance;
     public static MapManager Instance { get => instance; set => instance = value; }
     void Awake()
