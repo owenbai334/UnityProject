@@ -38,7 +38,7 @@ public class MapManager : MonoBehaviour
                     tempNum+=SaveData.mapNum[j];
                 }
             }
-            StartCount[i].text = $"{tempNum}/{3*55}";
+            StartCount[i].text = $"{tempNum}/{3*PanelGrid.gridNums}";
         }
     }
     public void ReturnLevil()

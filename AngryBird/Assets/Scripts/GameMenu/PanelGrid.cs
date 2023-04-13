@@ -7,7 +7,7 @@ public class PanelGrid : MonoBehaviour
 {
    public GameObject gridPrefab;
    public LevilSelect levilSelect;
-   public int gridNums;
+   public static int gridNums = 55;
    void Awake() 
    {
         for (int i = 1; i <= gridNums; i++)

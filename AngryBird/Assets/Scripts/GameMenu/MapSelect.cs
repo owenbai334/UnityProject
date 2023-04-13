@@ -12,10 +12,6 @@ public class MapSelect : MonoBehaviour
     //0 鎖 1 星星 2 panel 3星星
     [HideInInspector]
     public GameObject[] Objects;
-    void Awake() 
-    {
-        GameManager.Instance.Load();
-    }
     void Start()
     {
         CheckStart();

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 class SaveData
 {
     public int TotalStar;
-    public int[] mapNum = new int[8 * 55];
+    public int[] mapNum = new int[8 * PanelGrid.gridNums];
 }
 public class GameManager : MonoBehaviour
 {
@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     Vector3 originPosition;
     int starLength = 0;
     int starsNum;
-    static int[] mapNum = new int[8 * 55];
+    public static int[] mapNum = new int[8 * PanelGrid.gridNums];
     #region "Hide"
     [HideInInspector]
     public GameObject[] Stars;
@@ -52,6 +52,10 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         Instance = this;
         Scene scene = SceneManager.GetActiveScene();
+        if(scene.name=="Levil")
+        {
+            Load();
+        }
         if (scene.name == "Game")
         {
             Instantiate(Resources.Load($"{MapManager.SelectMap}/{LevilNum}"));
@@ -94,10 +98,11 @@ public class GameManager : MonoBehaviour
             }
         }
         else
-        {
+        {            
             DisButton();
             Menus[0].SetActive(true);
             Menus[1].SetActive(true);
+            realStar = birds.Count+1;
         }
     }
     void DisButton()
@@ -130,15 +135,15 @@ public class GameManager : MonoBehaviour
             Stars[starsNum].SetActive(true);
             yield return new WaitForSeconds(starTime);
         }
-        realStar = starsNum;
-        SaveStar();
     }
     public void Replay()
     {
+        SaveStar();
         SceneManager.LoadScene("Game");
     }
     public void ReturnMenu()
     {
+        SaveStar();
         SceneManager.LoadScene("Levil");
     }
     #region "Audio"
@@ -183,7 +188,7 @@ public class GameManager : MonoBehaviour
     SaveData Saveing()
     {
         var SaveData = new SaveData();
-        int index = MapManager.SelectMap * 55 + LevilNum - 1;
+        int index = MapManager.SelectMap * PanelGrid.gridNums + LevilNum - 1;
         if(index<0)
         {
             index=0;
@@ -198,11 +203,12 @@ public class GameManager : MonoBehaviour
             SaveData.mapNum[index] = mapNum[index];
         }
         int tempTotalStar = 0;
-        for (int i = 0; i < SaveData.mapNum.Length; i++)
+        for (int i = 0; i < mapNum.Length; i++)
         {
-            if (SaveData.mapNum[i] != 0)
+            if (mapNum[i] != 0)
             {
-                tempTotalStar += SaveData.mapNum[i];
+                SaveData.mapNum[i]=mapNum[i];
+                tempTotalStar += SaveData.mapNum[i];           
             }
         }
         SaveData.TotalStar = tempTotalStar;
@@ -217,6 +223,7 @@ public class GameManager : MonoBehaviour
             if (saveData.mapNum[i] != 0)
             {
                 tempTotalStar += saveData.mapNum[i];
+                mapNum[i] = saveData.mapNum[i];
             }
         }
         TotalStar = tempTotalStar;
