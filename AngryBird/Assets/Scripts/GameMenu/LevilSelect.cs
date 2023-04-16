@@ -8,6 +8,8 @@ public class LevilSelect : MonoBehaviour
 {
     public bool IsSelect = false;
     Image image;
+    Text text;
+    SaveData SaveData;
     public Sprite[] sprite;
     public Text Num;
     public GameObject[] stars;
@@ -15,11 +17,13 @@ public class LevilSelect : MonoBehaviour
     void Awake()
     {
         image = GetComponent<Image>();
+        text = transform.GetChild(0).GetComponent<Text>();
+        SaveData = SaveJson.LoadFromJson<SaveData>(GameManager.PLAYER_DATA_FILE_NAME);
     }
     void Start()
     {
-        Text text = transform.parent.GetChild(0).Find("Num").GetComponent<Text>();
-        if (text.text == gameObject.transform.Find("Num").GetComponent<Text>().text)
+        Text OneText = transform.parent.GetChild(0).Find("Num").GetComponent<Text>();
+        if (OneText.text == gameObject.transform.Find("Num").GetComponent<Text>().text)
         {
             IsSelect = true;
         }
@@ -42,10 +46,8 @@ public class LevilSelect : MonoBehaviour
     }
     public void ChangeColor()
     {
-        Text text = transform.GetChild(0).GetComponent<Text>();
         image.sprite = sprite[MapManager.SelectMap];
         transform.Find("Num").gameObject.SetActive(true);
-        var SaveData = SaveJson.LoadFromJson<SaveData>(GameManager.PLAYER_DATA_FILE_NAME);
         int count = SaveData.mapNum[MapManager.SelectMap * PanelGrid.gridNums + System.Convert.ToInt32(text.text) - 1];
         if (count == 3)
         {
@@ -94,8 +96,6 @@ public class LevilSelect : MonoBehaviour
     }
     void ExChange()
     {
-        Text text = transform.GetChild(0).GetComponent<Text>();
-        var SaveData = SaveJson.LoadFromJson<SaveData>(GameManager.PLAYER_DATA_FILE_NAME);
         int index = MapManager.SelectMap * PanelGrid.gridNums + System.Convert.ToInt32(text.text) - 2;
         if (index >= 0 && index < 8 * PanelGrid.gridNums)
         {

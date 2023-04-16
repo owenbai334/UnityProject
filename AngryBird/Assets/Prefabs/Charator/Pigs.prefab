@@ -165,13 +165,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de9ca11cfd0efa3418e17bc31199d162, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ScorePosition: {fileID: 4989889790775407502}
+  Explosion: {fileID: 8095099057569248317, guid: 4b55afdb85ff23c4f8f183d43a30b745, type: 3}
   MaxSpeed: 10
   MinSpeed: 5
   hurt: {fileID: 2735406450870712978, guid: d79c43203af3af84587f6f0328691b67, type: 3}
-  Explosion: {fileID: 8095099057569248317, guid: 4b55afdb85ff23c4f8f183d43a30b745, type: 3}
   Score: {fileID: 830068266367110137, guid: 7e52760b431058b45921135a2ed04ee2, type: 3}
-  ScorePosition: {fileID: 4989889790775407502}
   isPig: 1
+  score: 5000
   audios:
   - {fileID: 8300000, guid: 38333a1d7bb5eb347873760ab87f5241, type: 3}
   - {fileID: 8300000, guid: 770c652fc74c5bf4ab95ce51ac23e01e, type: 3}

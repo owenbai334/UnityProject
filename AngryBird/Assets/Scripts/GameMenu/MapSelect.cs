@@ -12,6 +12,8 @@ public class MapSelect : MonoBehaviour
     //0 鎖 1 星星 2 panel 3星星
     [HideInInspector]
     public GameObject[] Objects;
+    [HideInInspector]
+    public GameObject[] buttons;
     void Start()
     {
         CheckStart();
@@ -62,6 +64,8 @@ public class MapSelect : MonoBehaviour
             }
             Objects[2].SetActive(true);
             Objects[3].SetActive(false);
+            buttons[0].SetActive(false);
+            buttons[1].SetActive(false);
         }
     }
 }

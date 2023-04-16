@@ -36,19 +36,23 @@ public class GameManager : MonoBehaviour
     public List<Enemy> pigs;
     [HideInInspector]
     public bool isClickAudioBtn = false;
-    //0 背景, 1 贏, 2 輸 3暫停 4音樂
+    //0 背景, 1 贏, 2 輸 3暫停 4音樂 5 next
     [HideInInspector]
     public GameObject[] Menus;
     [HideInInspector]
     public float starTime;
+    [HideInInspector]
+    public Text[] scores;
     #endregion
     #region "public"
     public int TotalStar = 0;
+    public int TotalScore;
     #endregion
     public static int LevilNum = 1;
     public static int realStar = 0;
     void Awake()
     {
+        TotalScore = 0;
         Time.timeScale = 1;
         Instance = this;
         Scene scene = SceneManager.GetActiveScene();
@@ -111,6 +115,10 @@ public class GameManager : MonoBehaviour
         {
             buttons[i].enabled = false;
         }
+        if(MapManager.SelectMap==7&&LevilNum==55)
+        {
+            Menus[5].SetActive(false);
+        }
     }
     void UseButton()
     {
@@ -126,6 +134,7 @@ public class GameManager : MonoBehaviour
         {
             starLength = 2;
         }
+        scores[1].text = scores[0].text;
         StartCoroutine(Show());
     }
     IEnumerator Show()
@@ -145,6 +154,17 @@ public class GameManager : MonoBehaviour
     {
         SaveStar();
         SceneManager.LoadScene("Levil");
+    }
+    public void NextLevil()
+    {
+        SaveStar();
+        LevilNum+=1;
+        if(LevilNum==PanelGrid.gridNums+1)
+        {
+            MapManager.SelectMap+=1;
+            LevilNum=1;
+        }
+        SceneManager.LoadScene("Game");
     }
     #region "Audio"
     public void AudioPlay()

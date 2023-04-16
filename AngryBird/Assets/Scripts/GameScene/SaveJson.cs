@@ -7,7 +7,7 @@ public class SaveJson : MonoBehaviour
 {
     public static void SaveByjson(string SaveFilename, object data)
     {
-        if (!Directory.Exists( Application.dataPath + "/Resources/gameSaveData/"))
+        if (!Directory.Exists(Application.dataPath + "/Resources/gameSaveData/"))
         {
             Directory.CreateDirectory(Application.dataPath + "/Resources/gameSaveData/");
         }

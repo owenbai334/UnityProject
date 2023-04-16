@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour
     public Sprite hurt;
     public GameObject Score;
     public bool isPig;
+    public int score = 0;
     //0 受傷 1死亡
     public AudioClip[] audios;
     void Awake()
@@ -43,6 +44,8 @@ public class Enemy : MonoBehaviour
     }
     public void Die()
     {
+        GameManager.Instance.TotalScore+=score;
+        GameManager.Instance.scores[0].text = "Score:"+GameManager.Instance.TotalScore.ToString();
         if (audios != null)
         {
             GameManager.Instance.AudioPlay(audios[1]);
