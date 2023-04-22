@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 1738928590981504144}
   - component: {fileID: 6726035458374764013}
   m_Layer: 0
-  m_Name: RedBird
+  m_Name: BlueBird
   m_TagString: Bird
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -179,7 +179,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 4673891201235324854, guid: d79c43203af3af84587f6f0328691b67, type: 3}
+  m_Sprite: {fileID: 4774603884482428393, guid: d79c43203af3af84587f6f0328691b67, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -244,8 +244,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.008878201, y: -0.008878201}
-  m_Size: {x: 0.4722436, y: 0.4722436}
+  m_Offset: {x: 0.015866756, y: 0.005261719}
+  m_Size: {x: 0.24836063, y: 0.30256426}
   m_Direction: 0
 --- !u!114 &1738928590981504144
 MonoBehaviour:
@@ -279,5 +279,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: fb2d6480c97909e4e8701020a3791c9b, type: 3}
   - {fileID: 8300000, guid: 43d9a2e611f2f024d9c9aa6105f34376, type: 3}
   explosion: {fileID: 8095099057569248317, guid: 4b55afdb85ff23c4f8f183d43a30b745, type: 3}
-  Hurt: {fileID: 8669725828687014486, guid: d79c43203af3af84587f6f0328691b67, type: 3}
-  color: 0
+  Hurt: {fileID: -8156669098558442745, guid: d79c43203af3af84587f6f0328691b67, type: 3}
+  color: 5

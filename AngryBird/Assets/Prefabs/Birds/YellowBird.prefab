@@ -172,12 +172,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   springJointBird: {fileID: 0}
   colliderBird: {fileID: 0}
-  BirdPoint:
-  - {fileID: 0}
-  - {fileID: 0}
-  shootLine:
-  - {fileID: 0}
-  - {fileID: 0}
   audios:
   - {fileID: 8300000, guid: 7d7ca4a941367de4d91b7f7fe3144d33, type: 3}
   - {fileID: 8300000, guid: fb2d6480c97909e4e8701020a3791c9b, type: 3}

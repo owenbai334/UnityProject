@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     static GameManager instance;
     public static GameManager Instance { get => instance; set => instance = value; }
     Vector3 originPosition;
+    Rigidbody2D Shot;
     int starLength = 0;
     int starsNum;
     public static int[] mapNum = new int[8 * PanelGrid.gridNums];
@@ -50,7 +51,7 @@ public class GameManager : MonoBehaviour
     #endregion
     public static int LevilNum = 1;
     public static int realStar = 0;
-    void Awake()
+    public void Awake()
     {
         TotalScore = 0;
         Time.timeScale = 1;
@@ -64,6 +65,7 @@ public class GameManager : MonoBehaviour
         {
             Instantiate(Resources.Load($"{MapManager.SelectMap}/{LevilNum}"));
             UseButton();
+            Shot = GameObject.Find("Shot").transform.GetChild(1).GetComponent<Rigidbody2D>();
             for (int i = 0; i < GameObject.Find("Bird").transform.childCount; i++)
             {
                 birds.Add(GameObject.Find("Bird").transform.GetChild(i).GetComponent<Player>());
@@ -85,6 +87,7 @@ public class GameManager : MonoBehaviour
         birds[0].enabled = true;
         birds[0].springJointBird.enabled = true;
         birds[0].colliderBird.enabled = true;
+        birds[0].springJointBird.connectedBody = Shot;
     }
     public void NextBird()
     {

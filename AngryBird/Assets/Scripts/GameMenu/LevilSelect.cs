@@ -31,6 +31,11 @@ public class LevilSelect : MonoBehaviour
         {
             ChangeColor();
         }
+        else
+        {
+            Lock();
+        }
+        ExChange();
     }
     void Update()
     {

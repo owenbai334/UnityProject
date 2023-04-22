@@ -101,6 +101,8 @@ public class MapManager : MonoBehaviour
             GameManager.mapNum[i]=0;
         }
         GameManager.Instance.SaveStar();
+        GameManager.Instance.Awake();
         MapManager.instance.Awake();
+        ConfigSetting();
     }
 }

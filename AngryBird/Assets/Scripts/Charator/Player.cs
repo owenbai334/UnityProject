@@ -93,11 +93,11 @@ public class Player : MonoBehaviour
     {
         transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.position += new Vector3(0, 0, -Camera.main.transform.position.z);
-        if (Vector3.Distance(this.transform.position, BirdPoint[0].position) > maxDistance)
+        if (Vector3.Distance(transform.position, BirdPoint[0].position) > maxDistance)
         {
-            Vector3 tempPos = (this.transform.position - BirdPoint[0].position).normalized;//獲得向量的方向
+            Vector3 tempPos = (transform.position - BirdPoint[0].position).normalized;//獲得向量的方向
             tempPos *= maxDistance;//最大長度的向量
-            this.transform.position = tempPos + BirdPoint[0].position;
+            transform.position = tempPos + BirdPoint[0].position;
         }
         Line();
     }
