@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     float maxDistance = 1.8f;
     SpriteRenderer render;
     Rigidbody2D rigidBodyBird;
+    WhiteEgg egg;
     Transform[] BirdPoint = new Transform[2];
     LineRenderer[] shootLine = new LineRenderer[2];
     List<Enemy> blocks = new List<Enemy>();
@@ -42,7 +43,7 @@ public class Player : MonoBehaviour
     }
     public BirdType color;
     #endregion
-    
+
     void Awake()
     {
         springJointBird = GetComponent<SpringJoint2D>();
@@ -50,6 +51,10 @@ public class Player : MonoBehaviour
         colliderBird = GetComponent<CapsuleCollider2D>();
         textMyTrail = GetComponent<TextMyTrail>();
         render = GetComponent<SpriteRenderer>();
+        if (color == BirdType.WHITE)
+        {
+            egg = GetComponent<WhiteEgg>();
+        }
         BirdPoint[0] = transform.parent.parent.Find("Shot").GetChild(1).GetChild(0).GetComponent<Transform>();
         BirdPoint[1] = transform.parent.parent.Find("Shot").GetChild(0).GetChild(0).GetComponent<Transform>();
         shootLine[0] = transform.parent.parent.Find("Shot").GetChild(1).GetComponent<LineRenderer>();
@@ -61,7 +66,7 @@ public class Player : MonoBehaviour
         {
             BirdClicked();
         }
-        if (isFly||(color==BirdType.BLACK&&isTouch))
+        if (isFly || (color == BirdType.BLACK && isTouch))
         {
             UseSkill();
         }
@@ -78,7 +83,7 @@ public class Player : MonoBehaviour
             rigidBodyBird.constraints = RigidbodyConstraints2D.None;
         }
     }
-    void OnMouseUp()
+    public void OnMouseUp()
     {
         isClick = false;
         rigidBodyBird.isKinematic = false;
@@ -129,35 +134,41 @@ public class Player : MonoBehaviour
                 break;
             case BirdType.GREEN:
                 Vector3 speed = rigidBodyBird.velocity;
-                speed.x*=-1;
+                speed.x *= -1;
                 speed.y *= Mathf.Atan(-speed.y);
                 rigidBodyBird.velocity = speed;
                 break;
             case BirdType.BLACK:
-                if(blocks.Count >0 && blocks!=null)
+                if (blocks.Count > 0 && blocks != null)
                 {
                     for (int i = 0; i < blocks.Count; i++)
                     {
-                        blocks[i].Die();                   
+                        blocks[i].Die();
                     }
                 }
                 OnClear();
+                break;
+            case BirdType.WHITE:
+                if (egg != null)
+                {
+                    egg.UseEgg();
+                }
                 break;
             default:
                 break;
         }
 
     }
-    void OnTriggerEnter2D(Collider2D other) 
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.gameObject.tag=="Enemy"||other.gameObject.tag=="Barrier")
+        if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "Barrier")
         {
             blocks.Add(other.gameObject.GetComponent<Enemy>());
         }
     }
-    void OnTriggerExit2D(Collider2D other) 
+    void OnTriggerExit2D(Collider2D other)
     {
-        if(other.gameObject.tag=="Enemy"||other.gameObject.tag=="Barrier")
+        if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "Barrier")
         {
             blocks.Remove(other.gameObject.GetComponent<Enemy>());
         }
@@ -188,12 +199,22 @@ public class Player : MonoBehaviour
     {
         isTouch = true;
         isFly = false;
-        Invoke("Next", 3f);
+        if (color == BirdType.WHITE)
+        {
+            Next();
+        }
+        else
+        {
+            Invoke("Next", 3f);
+        }
     }
     public void CameraFollow()
     {
-        float posX = this.transform.position.x;
-        Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(Mathf.Clamp(posX, 0, 17), Camera.main.transform.position.y, Camera.main.transform.position.z), CameraSpeed * Time.deltaTime);
+        if (color != BirdType.WHITE)
+        {
+            float posX = this.transform.position.x;
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, new Vector3(Mathf.Clamp(posX, 0, 17), Camera.main.transform.position.y, Camera.main.transform.position.z), CameraSpeed * Time.deltaTime);
+        }
     }
     public void BirdHurt()
     {

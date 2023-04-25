@@ -29,7 +29,11 @@ public class Enemy : MonoBehaviour
         {
             other.transform.GetComponent<Player>().BirdHurt();
         }
-        if (other.relativeVelocity.magnitude > MaxSpeed)
+        if(other.gameObject.tag=="Egg")
+        {
+            other.transform.GetComponent<EggCollision>().Die();
+        }
+        if (other.relativeVelocity.magnitude > MaxSpeed||other.gameObject.tag=="Egg")
         {
             Die();
         }

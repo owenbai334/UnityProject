@@ -117,6 +117,7 @@ GameObject:
   - component: {fileID: 6726035458374764010}
   - component: {fileID: 1738928590981504144}
   - component: {fileID: 6726035458374764013}
+  - component: {fileID: -1089443589897720663}
   m_Layer: 0
   m_Name: WhiteBird
   m_TagString: Bird
@@ -281,3 +282,18 @@ MonoBehaviour:
   explosion: {fileID: 8095099057569248317, guid: 4b55afdb85ff23c4f8f183d43a30b745, type: 3}
   Hurt: {fileID: -7747744074884047573, guid: d79c43203af3af84587f6f0328691b67, type: 3}
   color: 2
+--- !u!114 &-1089443589897720663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6726035458374763543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd3cbc0b8d666e546ba2872e735b9afb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  egg: {fileID: 6779177492310498161, guid: 67ed39a439cdce14ba26616be7473080, type: 3}
+  speed: 1000
+  image: {fileID: -1460397232846102397, guid: d79c43203af3af84587f6f0328691b67, type: 3}
